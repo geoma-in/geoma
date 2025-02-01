@@ -26,6 +26,8 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 10px 0;
+    position: relative; /* Needed for absolute positioning of the nav menu */
 }
 
 .logo a {
@@ -38,6 +40,7 @@ header {
     text-decoration: none;
 }
 
+/* Navigation Menu */
 nav ul {
     list-style: none;
     margin: 0;
@@ -60,6 +63,58 @@ nav ul li a {
 
 nav ul li a:hover {
     color: #007BFF;
+}
+
+/* Hamburger Icon and Checkbox */
+.menu-toggle {
+    display: none; /* Hide the checkbox */
+}
+
+.hamburger {
+    display: none; /* Hide by default */
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .hamburger {
+        display: block; /* Show hamburger icon on mobile */
+    }
+
+    nav {
+        display: none; /* Hide navigation menu by default on mobile */
+        position: absolute;
+        top: 100%; /* Position below the header */
+        left: 0;
+        width: auto; /* Adjust width based on content */
+        background: #fff;
+        border-top: 1px solid #e0e0e0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 10px 20px;
+        z-index: 1000; /* Ensure it appears above other content */
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: flex-start;
+        white-space: nowrap; /* Prevent text wrapping */
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    /* Show navigation menu when checkbox is checked */
+    .menu-toggle:checked ~ nav {
+        display: block;
+    }
+
+    /* Add spacing between hamburger icon and nav menu */
+    .menu-toggle:checked ~ nav {
+        left: 20px; /* Adjust spacing as needed */
+    }
 }
 
 /* Hero Section */
