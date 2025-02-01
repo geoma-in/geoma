@@ -663,3 +663,7 @@ footer a:hover {
 .article {
     text-align: left;
 }
+
+.article-header {
+    text-align: center;
+}
