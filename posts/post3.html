@@ -15,17 +15,20 @@
             <h1 class="logo">
                 <a href="/">Geoma</a>
             </h1>
-            <nav>
+            <div class="hamburger" id="hamburger-icon">
+                <i class="fas fa-bars"></i> 
+            </div>
+            <nav id="nav-menu">
                 <ul>
                     <li><a href="/">Home</a></li>
                     <li><a href="#about">About</a></li>
-                    <li><a href="/posts.html">Blog</a></li>
+                    <li><a href="posts/posts.html">Blog</a></li>
                     <li><a href="#categories">Categories</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
         </div>
-    </header>
+    </header> 
 
     <main class="container">
 
@@ -33,7 +36,7 @@
             <div class="article">
                 <div class="article-header">
                     <h1>Applications of Remote Sensing in Agriculture</h1>
-                    <!-- Article Metadata -->
+
                     <div class="article-meta">
                         <span class="publish-date">Published on: <time datetime="2024-04-15">April 15, 2024</time></span>
                         <span class="author">By: <a href="/author/john-doe">John Doe</a></span>
@@ -45,7 +48,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- Table of Contents -->
+
                 <div class="toc">
                     <h3>Table of Contents</h3>
                     <ul>
@@ -91,26 +94,22 @@
                 <h2 id="conclusion">Conclusion</h2>
                 <p>Remote sensing has become an indispensable tool in modern agriculture. From monitoring crop health to predicting yields and managing disasters, it offers a wide range of applications that help farmers increase productivity and sustainability. As technology continues to advance, the potential for remote sensing in agriculture will only grow, paving the way for smarter and more efficient farming practices.</p>
         
-                <!-- References Section -->
                 <div class="references">
                     <h3>References</h3>
                     <ul>
                         <li><a href="https://www.nasa.gov" target="_blank">NASA's Earth Science Division</a></li>
                         <li><a href="https://www.fao.org" target="_blank">FAO's Remote Sensing Resources</a></li>
-                        <!-- Add more references as needed -->
                     </ul>
                 </div>
             </div>
 
-            <!-- Call-to-Action (CTA) -->
             <div class="cta">
                 <p>Enjoyed this article? <a href="/posts.html">Explore more blogs</a> or <a href="#subscribe">subscribe to our newsletter</a> for the latest updates!</p>
             </div>
     
-            <!-- Author Bio -->
             <div class="author-bio">
                 <div class="author-icon">
-                    <i class="fas fa-user-edit"></i> <!-- Font Awesome user icon -->
+                    <i class="fas fa-user-edit"></i>
                 </div>
                 <div class="bio-text">
                     <p><strong>John Doe</strong> is a GIS specialist with over 10 years of experience in remote sensing and agricultural technology. Connect with him on <a href="https://linkedin.com/in/johndoe">LinkedIn</a>.</p>
@@ -120,19 +119,10 @@
         </section>
 
         <section id="contact" class="contact">
+            <div class="form-container">
+                <iframe src="https://docs.google.com/forms/d/1UBODXqxmLYgSuOTVAzoabKzjaduN1f8-syvmOlaO8RE/viewform?usp=pp_url&entry.2005620554=&entry.1045781291=&entry.1065046570=" width="640" height="895" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            </div>
             <h2>Contact Us</h2>
-            <form action="#" method="post">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" rows="5" required></textarea>
-
-                <button type="submit">Send Message</button>
-            </form>
             <div class="social-icons">
                 <a href="https://www.instagram.com/geoma.in/" class="icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                 <a href="https://www.facebook.com/geoma_in/" class="icon" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
@@ -152,6 +142,6 @@
         </div>
     </footer>
 
-    <!-- <script src="js/scripts.js"></script> -->
+    <script src="/js/scripts.js"></script>
 </body>
 </html>
