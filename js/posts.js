@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async function () {
-    const postsContainer = document.getElementById("posts-grid"); // Latest posts container
+    const postsContainer = document.getElementById("posts-grid");
     const categoriesContainer = document.getElementById("categories-grid");
     const filteredPostsContainer = document.querySelector("#filtered-posts .posts-grid");
     const selectedCategoryTitle = document.getElementById("selected-category-title");
