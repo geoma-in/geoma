@@ -6,7 +6,6 @@ async function loadFeaturedPosts() {
         // Filter featured posts (Featured = 1)
         const featuredPosts = posts.filter(post => post.featured == 1);
 
-        // Select the container
         const container = document.getElementById("featured-posts-container");
         container.innerHTML = featuredPosts.map(post => `
             <article class="post">
