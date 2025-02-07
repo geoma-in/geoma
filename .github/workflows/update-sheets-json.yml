@@ -5,6 +5,9 @@ on:
     - cron: '0 0 * * *'  # Runs daily at midnight UTC
   workflow_dispatch:  # Allows manual triggering
 
+permissions:
+  contents: write  # Allows pushing changes to the repository
+
 jobs:
   update-json:
     runs-on: ubuntu-latest
@@ -12,14 +15,16 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Download JSON from Google Drive Link
+      - name: Download JSON from Google Sheets
         run: |
           curl -L "https://script.googleusercontent.com/macros/echo?user_content_key=bzDt34oIoapezkQmCxUyomKznCZt56zA0ugzyUUQTFz7RNvmE4G2poVYTZJlRaKwzgD6I3mgYgHXu2NGvjrZnw9QpvEYtWi-m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnBmGL9mc5oorN_XbQNh9o_Heed6sqzTjou6QeeDinlwAX6JlmzvpgN1mwYJt-xVbccYnrYbW5mhtkOzRZCeu3EtlRDqAUOWYz9z9Jw9Md8uu&lib=MDllf0ZTSpuyTHi1JegAKN17QLPP83cwy" -o data/posts.json
 
       - name: Commit and Push Changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add data/posts.json
           git commit -m "Updated posts.json from Google Sheets" || echo "No changes to commit"
-          git push
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
