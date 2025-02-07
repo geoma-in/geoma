@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GEOMA</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -15,133 +15,59 @@
             <h1 class="logo">
                 <a href="/">Geoma</a>
             </h1>
-            <nav>
+            <div class="hamburger" id="hamburger-icon">
+                <i class="fas fa-bars"></i> 
+            </div>
+            <nav id="nav-menu">
                 <ul>
                     <li><a href="/">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="/posts.html">Blog</a></li>
+                    <li><a href="/index.html#about">About</a></li>
+                    <li><a href="/posts/posts.html">Blog</a></li>
                     <li><a href="#categories">Categories</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
         </div>
-    </header>
+    </header>       
 
     <main class="container">
 
+        <!-- Latest Posts -->
+        <section id="latest-posts" class="latest-posts">
+            <h2>Latest Posts</h2>
+            <div id="posts-grid" class="posts-grid">
+                <!-- Latest posts will be dynamically loaded here -->
+            </div>
+        </section>
+
+        <!-- Categories Section -->
         <section id="categories" class="categories">
             <h2>Categories</h2>
-            <div class="categories-grid">
-                <div class="categories-card">
-                    <p class="categories-title">Remote sensing</p>
-                </div>
-                <div class="categories-card">
-                    <p class="categories-title">GIS</p>
-                </div>
-                <div class="categories-card">
-                    <p class="categories-title">Agriculture</p>
-                </div>
-                <div class="categories-card">
-                    <p class="categories-title">Technology</p>
-                </div>
-                <div class="categories-card">
-                    <p class="categories-title">Trending</p>
-                </div>
+            <div id="categories-grid" class="categories-grid">
+                <!-- Categories will be dynamically added here -->
             </div>
         </section>
 
-        <section class="featured-posts">
-            <h3>Featured Posts</h3>
+        <!-- Filtered Posts Section -->
+        <section id="filtered-posts" style="display: none;">
+            <h2 id="selected-category-title"></h2>
             <div class="posts-grid">
-                <article class="post">
-                    <div class="post-image-container">
-                        <img src="images/post1.jpg" alt="Post 1" class="post-image" loading="lazy">
-                    </div>
-                    <h4 class="post-title">Post Title 1</h4>
-                    <p class="post-excerpt">Lorem ipsum dolor sit amet, ccsdacnslkadjbnls casdjbvjsd casdbcsaubc ascasdcbuasdbc bcjsbdc asc consectetur adipiscing elit. Quisque sit amet accumsan tortor.</p>
-                    <a href="/posts/post1.html" class="read-more">Read More</a>
-                </article>
-                
-                <article class="post">
-                    <div class="post-image-container">
-                        <img src="images/post2.jpg" alt="Post 2" class="post-image" loading="lazy">
-                    </div>
-                    <h4 class="post-title">Post Title 2</h4>
-                    <p class="post-excerpt">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sit amet accumsan tortor.</p>
-                    <a href="/posts/post2.html" class="read-more">Read More</a>
-                </article>
-                
-                <article class="post">
-                    <div class="post-image-container">
-                        <img src="images/post3.jpg" alt="Post 3" class="post-image" loading="lazy">
-                    </div>
-                    <h4 class="post-title">Post Title 3</h4>
-                    <p class="post-excerpt">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sit amet accumsan tortor.</p>
-                    <a href="/posts/post3.html" class="read-more">Read More</a>
-                </article>
+                <!-- Filtered posts will be dynamically loaded here -->
             </div>
         </section>
 
-        <section class="articles">
-            <div class="article">
-                <h1>Applications of Remote Sensing in Agriculture</h1>
-                <p>Remote sensing, the science of obtaining information about objects or areas from a distance, has revolutionized modern agriculture. By using satellite imagery, drones, and other remote sensing technologies, farmers and researchers can monitor crops, manage resources, and improve yields more efficiently than ever before.</p>
-
-                <h2>1. Crop Health Monitoring</h2>
-                <p>One of the most significant applications of remote sensing in agriculture is crop health monitoring. Using multispectral and hyperspectral imaging, farmers can detect early signs of disease, nutrient deficiencies, or pest infestations. For example, the Normalized Difference Vegetation Index (NDVI) is a widely used remote sensing technique to assess plant health by measuring the reflectance of visible and near-infrared light.</p>
-                <img src="https://via.placeholder.com/800x400" alt="Crop Health Monitoring">
-                <p class="image-caption">Figure 1: Satellite image showing NDVI values for crop health assessment.</p>
-
-                <h2>2. Precision Agriculture</h2>
-                <p>Precision agriculture relies heavily on remote sensing to optimize the use of resources such as water, fertilizers, and pesticides. By analyzing data collected from satellites or drones, farmers can create variable rate application maps. These maps guide machinery to apply inputs only where needed, reducing waste and environmental impact.</p>
-                <img src="https://via.placeholder.com/800x400" alt="Precision Agriculture">
-                <p class="image-caption">Figure 2: Drone capturing field data for precision agriculture.</p>
-
-                <h2>3. Soil Analysis</h2>
-                <p>Remote sensing is also used to analyze soil properties, such as moisture content, texture, and organic matter. This information helps farmers make informed decisions about irrigation and soil management. For instance, thermal imaging can identify areas of a field that are too dry or too wet, enabling targeted irrigation.</p>
-                <img src="https://via.placeholder.com/800x400" alt="Soil Analysis">
-                <p class="image-caption">Figure 3: Thermal image showing soil moisture variations.</p>
-
-                <h2>4. Yield Prediction</h2>
-                <p>By combining remote sensing data with machine learning algorithms, farmers can predict crop yields with high accuracy. This information is invaluable for planning harvests, managing supply chains, and making financial decisions. Satellite imagery can track crop growth stages and estimate yields based on historical data and current conditions.</p>
-                <img src="https://via.placeholder.com/800x400" alt="Yield Prediction">
-                <p class="image-caption">Figure 4: Satellite image used for yield prediction modeling.</p>
-
-                <h2>5. Disaster Management</h2>
-                <p>Remote sensing plays a critical role in managing agricultural disasters such as droughts, floods, and storms. By monitoring weather patterns and environmental changes, farmers can take proactive measures to protect their crops. For example, early warning systems using satellite data can alert farmers to impending droughts, allowing them to implement water-saving measures.</p>
-                <img src="https://via.placeholder.com/800x400" alt="Disaster Management">
-                <p class="image-caption">Figure 5: Satellite image showing drought-affected regions.</p>
-
-                <h2>Conclusion</h2>
-                <p>Remote sensing has become an indispensable tool in modern agriculture. From monitoring crop health to predicting yields and managing disasters, it offers a wide range of applications that help farmers increase productivity and sustainability. As technology continues to advance, the potential for remote sensing in agriculture will only grow, paving the way for smarter and more efficient farming practices.</p>
-
-                <p>For more information, check out <a href="https://www.nasa.gov" target="_blank">NASA's Earth Science Division</a> or <a href="https://www.fao.org" target="_blank">FAO's Remote Sensing Resources</a>.</p>
-            </div>
-        </section>
-
+        <!-- Contact Section -->
         <section id="contact" class="contact">
             <h2>Contact Us</h2>
-            <form action="#" method="post">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" rows="5" required></textarea>
-
-                <button type="submit">Send Message</button>
-            </form>
-            <div class="social-icons">
-                <a href="https://www.instagram.com/geoma.in/" class="icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.facebook.com/geoma_in/" class="icon" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                <a href="https://www.linkedin.com/in/geoma-india/" class="icon" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                <a href="https://x.com/geoma_in" class="icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                <a href="https://www.reddit.com/user/geoma-in/" class="icon" aria-label="Reddit"><i class="fab fa-reddit"></i></a>
-                <a href="mailto:contact@geoma.in" class="icon" aria-label="Email"><i class="fas fa-envelope"></i></a>
-            </div>
-            <p>Email: <a href="mailto:contact@geoma.in">contact@geoma.in</a></p>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/geoma.in/" class="icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/geoma_in/" class="icon" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.linkedin.com/in/geoma-india/" class="icon" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://x.com/geoma_in" class="icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.reddit.com/user/geoma-in/" class="icon" aria-label="Reddit"><i class="fab fa-reddit"></i></a>
+                    <a href="mailto:contact@geoma.in" class="icon" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                </div>
+                <p>Email: <a href="mailto:contact@geoma.in">contact@geoma.in</a></p>
         </section>
 
     </main>
@@ -152,6 +78,8 @@
         </div>
     </footer>
 
-    <script src="js/scripts.js"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="/js/posts.js"></script>
+
 </body>
 </html>

@@ -37,41 +37,16 @@
             <div class="hero-content">
                 <h2>Welcome to Geoma</h2>
                 <p>Your source for insightful articles on remote sensing, GIS, and more.</p>
-                <a href="/categories.html" class="btn-container">Explore More Blogs</a>
+                <a href="posts/posts.html" class="btn-container">Explore More Blogs</a>
             </div>
         </section>
 
         <section class="featured-posts">
             <h3>Featured Posts</h3>
-            <div class="posts-grid">
-                <article class="post">
-                    <div class="post-image-container">
-                        <img src="images/post1.jpg" alt="Post 1" class="post-image" loading="lazy">
-                    </div>
-                    <h4 class="post-title">Post Title 1</h4>
-                    <p class="post-excerpt">Lorem ipsum dolor sit amet, ccsdacnslkadjbnls casdjbvjsd casdbcsaubc ascasdcbuasdbc bcjsbdc asc consectetur adipiscing elit. Quisque sit amet accumsan tortor.</p>
-                    <a href="/posts/post1.html" class="read-more">Read More</a>
-                </article>
-                
-                <article class="post">
-                    <div class="post-image-container">
-                        <img src="images/post2.jpg" alt="Post 2" class="post-image" loading="lazy">
-                    </div>
-                    <h4 class="post-title">Post Title 2</h4>
-                    <p class="post-excerpt">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sit amet accumsan tortor.</p>
-                    <a href="/posts/post2.html" class="read-more">Read More</a>
-                </article>
-                
-                <article class="post">
-                    <div class="post-image-container">
-                        <img src="images/post3.jpg" alt="Post 3" class="post-image" loading="lazy">
-                    </div>
-                    <h4 class="post-title">Applications of Remote Sensing in Agriculture</h4>
-                    <p class="post-excerpt">Remote sensing, the science of obtaining information about objects or areas from a distance, has revolutionized modern agriculture. By using satellite imagery, drones, and other remote sensing technologies, farmers and researchers can monitor crops, manage resources, and improve yields more efficiently than ever before.</p>
-                    <a href="posts/post3.html" class="read-more">Read More</a>
-                </article>
+            <div class="posts-grid" id="featured-posts-container">
+                <!-- Featured posts will be inserted here dynamically -->
             </div>
-            <a href="/categories.html" class="btn-container">Explore More Blogs</a>
+            <a href="posts/posts.html" class="btn-container">Explore More Blogs</a>
         </section>
 
         <section id="about" class="about">
@@ -85,24 +60,10 @@
 
         <section id="categories" class="categories">
             <h2>Categories</h2>
-            <div class="categories-grid">
-                <div class="categories-card">
-                    <p class="categories-title">Remote sensing</p>
-                </div>
-                <div class="categories-card">
-                    <p class="categories-title">GIS</p>
-                </div>
-                <div class="categories-card">
-                    <p class="categories-title">Agriculture</p>
-                </div>
-                <div class="categories-card">
-                    <p class="categories-title">Technology</p>
-                </div>
-                <div class="categories-card">
-                    <p class="categories-title">Trending</p>
-                </div>
+            <div id="categories-grid" class="categories-grid">
+                <!-- Categories will be dynamically added here -->
             </div>
-        </section>
+        </section>        
 
         <section id="contact" class="contact">
             <h2>Contact Us</h2>
@@ -126,5 +87,8 @@
     </footer>
 
     <script src="js/scripts.js"></script>
+    <script src="js/featured_posts.js"></script>
+    <script src="js/categories.js"></script>
+
 </body>
 </html>
