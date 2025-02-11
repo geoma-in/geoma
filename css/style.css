@@ -109,6 +109,11 @@ nav ul li a:hover {
     nav.active {
         display: block;
     }
+
+    /* Add spacing between hamburger icon and nav menu */
+    .menu-toggle:checked ~ nav {
+        left: 20px; /* Adjust spacing as needed */
+    }
 }
 
 /* Hero Section */

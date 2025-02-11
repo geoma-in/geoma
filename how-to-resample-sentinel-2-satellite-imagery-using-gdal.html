@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEOMA</title>
+    <link rel="stylesheet" href="post_style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <h1 class="logo">
+                <a href="/">Geoma</a>
+            </h1>
+            <div class="hamburger" id="hamburger-icon">
+                <i class="fas fa-bars"></i> 
+            </div>
+            <nav id="nav-menu">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/index.html#about">About</a></li>
+                    <li><a href="/posts/posts.html">Blog</a></li>
+                    <li><a href="/posts/posts.html#categories">Categories</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header> 
+
+    <main class="container">
+        <section class="articles">
+            <div class="article">
+                <div class="article-header">
+                    <h1>How to Resample Sentinel-2 Satellite Imagery Using GDAL</h1>
+                    <div class="article-meta">
+                        <span class="publish-date">Published on: <time datetime="2025-02-10">February 10, 2025</time></span>
+                        <span class="author">By: <a href="/author/geoma-team">Geoma Team</a></span>
+                        <div class="tags">
+                            Tags: 
+                            <a href="/tags/remote-sensing">Remote Sensing</a>, 
+                            <a href="/tags/technology">Technology</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="toc">
+                    <h3>Table of Contents</h3>
+                    <ul>
+                        <li><a href="#introduction">Introduction</a></li>
+                        <li><a href="#prerequisites">Prerequisites</a></li>
+                        <li><a href="#understanding-resampling">Understanding Sentinel-2 Resampling</a></li>
+                        <li><a href="#python-script">Python Script for Resampling Sentinel-2 Imagery</a></li>
+                        <li><a href="#verify-ouput">Verify the Ouput</a></li>
+                        <li><a href="#conclusion">Conclusion</a></li>
+                    </ul>
+                </div>
+                
+                <h2 id="introduction">Introduction</h2>
+                <p>Sentinel-2 provides multispectral imagery at different spatial resolutions (10m, 20m, and 60m). For many remote sensing applications, resampling bands to a uniform resolution is necessary to facilitate analysis. In this guide, we will use the GDAL library to resample Sentinel-2 imagery from 20m and 60m resolutions to 10m resolution.</p>
+
+                <h2 id="prerequisites">Prerequisites</h2>
+                <ul>
+                    <li>GDAL (Geospatial Data Abstraction Library)</li>
+                    <li>Python 3 or above</li>
+                    <li>Sentinel-2 imagery (Level-2A product in .jp2 format)</li>
+                </ul>
+
+                <h2 id="understanding-resampling">Understanding Sentinel-2 Resampling</h2>
+                <p>Sentinel-2 images consist of multiple bands captured at different resolutions:</p>
+                <ul>
+                    <li><strong>10m resolution:</strong> Bands 2, 3, 4, 8</li>
+                    <li><strong>20m resolution:</strong> Bands 5, 6, 7, 8a, 11, 12</li>
+                    <li><strong>60m resolution:</strong> Bands 1, 9, 10</li>
+                </ul>
+                <p>For many applications (such as vegetation analysis), it is beneficial to bring all bands to 10m resolution using a resampling method like nearest neighbor, bilinear, or cubic interpolation.</p>
+
+                <h2 id="python-script">Python Script for Resampling Sentinel-2 Imagery</h2>
+                <p>The following script automates the resampling of Sentinel-2 images using GDAL.</p>
+                
+                <h3>Loading Required Packages</h3>
+                <pre><code class="language-python">import os
+import re
+from osgeo import gdal</code></pre>
+
+    <h3>Setting Up Paths</h3>
+    <p>rawdataPath: Path to the input Sentinel-2 images.
+        resamplePath: Directory where the resampled images will be saved. If it doesn't exist, the script creates it.</p>
+    <pre><code class="language-python"># Define input and output directories
+rawdataPath = "./sample_data/input_raster/"
+resamplePath = "./sample_data/resample_raster/"
+
+# Create output directory if it doesn't exist
+if not os.path.exists(resamplePath):
+    os.mkdir(resamplePath)</code></pre>
+
+    <h3>Resampling Configuration</h3>
+    <p>Choosing the Right Resampling Method. GDAL supports various resampling algorithms. Depending on your use case, you can modify the resampleMethod parameter:</p>
+        <p>"nearest" → Preserves original pixel values, best for categorical data (e.g., land cover classification).</p>
+        <p>"bilinear" → Computes an average of surrounding pixels, suitable for continuous data (e.g., temperature, NDVI).</p>
+        <p>"cubic" → Higher quality interpolation but computationally expensive.</p>
+    <pre><code class="language-python"># Output resolution (10m)
+outRes = 10
+
+# Resampling method (nearest neighbor)
+resampleMethod = "nearest"</code></pre>
+
+    <h3>Resampling Process</h3>
+    <pre><code class="language-python"># Loop through each file and resample
+for file in os.listdir(rawdataPath):
+    srcPath = os.path.join(rawdataPath, file)
+    resamplefile = file.replace("_20", "_10").replace("_60", "_10").replace(".jp2", ".tif")
+    dstpath = os.path.join(resamplePath, resamplefile)
+    
+    # Define GDAL warp options
+    warpOptions = gdal.WarpOptions(
+        format="GTiff",
+        outputType=gdal.GDT_UInt16,
+        xRes=outRes,
+        yRes=outRes,
+        resampleAlg=resampleMethod,
+        callback=gdal.TermProgress_nocb
+    )
+    
+    # Perform resampling
+    gdal.Warp(dstpath, srcPath, options=warpOptions)</code></pre>
+
+                <h3 id="verify-ouput"> Verify the Output</h3>
+                <p>After running the script, the resampled images will be stored in the resamplePath directory. You can visualize them using QGIS</p>
+    
+                <h2 id="conclusion">Conclusion</h2>
+                <p>In this guide, we demonstrated how to resample Sentinel-2 imagery using Python and GDAL. This method ensures that all bands are at the same spatial resolution, making it easier for further analysis such as vegetation mapping, land cover classification, or NDVI calculations.</p>
+                
+                <div class="references">
+                    <h3>References</h3>
+                    <ul>
+                        <li><a href="https://gdal.org/" target="_blank">GDAL Documentation</a></li>
+                        <li><a href="https://scihub.copernicus.eu/" target="_blank">ESA Sentinel-2 Data Access</a></li>
+                        <li><a href="https://qgis.org/" target="_blank">QGIS Raster Processing</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="cta">
+                <p>Enjoyed this article? <a href="/posts/posts.html">Explore more blogs</a> or <a href="#contact">give your feedback</a> for this article</p>
+            </div>
+    
+            <div class="author-bio">
+                <div class="author-icon">
+                    <i class="fas fa-user-edit"></i>
+                </div>
+                <div class="bio-text">
+                    <p>The <strong>Geoma Team</strong> consists of GIS and remote sensing experts passionate about geospatial technology, agriculture, and environmental analysis. Connect with the team on <a href="https://linkedin.com/in/geoma-in">LinkedIn</a>.</p>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="contact" class="contact">
+            <div class="form-container">
+                <iframe src="https://docs.google.com/forms/d/1UBODXqxmLYgSuOTVAzoabKzjaduN1f8-syvmOlaO8RE/viewform?usp=pp_url&entry.2005620554=&entry.1045781291=&entry.1065046570=" width="640" height="895" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            </div>
+            <h2>Contact Us</h2>
+            <div class="social-icons">
+                <a href="https://www.instagram.com/geoma.in/" class="icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/geoma_in/" class="icon" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.linkedin.com/in/geoma-india/" class="icon" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://x.com/geoma_in" class="icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.reddit.com/user/geoma-in/" class="icon" aria-label="Reddit"><i class="fab fa-reddit"></i></a>
+                <a href="mailto:contact@geoma.in" class="icon" aria-label="Email"><i class="fas fa-envelope"></i></a>
+            </div>
+            <p>Email: <a href="mailto:contact@geoma.in">contact@geoma.in</a></p>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <p>Copyright © 2024 Geoma - All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/js/scripts.js"></script>
+</body>
+</html>
