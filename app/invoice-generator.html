@@ -1,229 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Construction Calculator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invoice Generator</title>
+  <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-  <style>
-    body { font-family: sans-serif; padding: 20px; }
-    table, th, td { border: 1px solid black; border-collapse: collapse; padding: 5px; }
-    table { margin-bottom: 20px; }
-  </style>
+  <script>
+    window.jsPDF = window.jspdf.jsPDF;
+  </script>
 </head>
 <body>
+  <section class="form-section card">
+    <h2>Invoice Generator</h2>
+    <div class="form-row">
+      <label>Vendor Name:<br><input type="text" id="vendorName" placeholder="Company/Your name" class="input"></label>
+      <label>Mobile Number:<br><input type="number" id="mobileNumber" placeholder="Mobile number" class="input"></label>
+      <label>Site Name:<br><input type="text" id="siteName" placeholder="Site/Project name" class="input"></label>
+    </div>
 
-  <h2>Construction Work Invoice Generator</h2>
-  <label><strong>Site Name:</strong> <input type="text" id="siteName" style="width: 300px;" placeholder="Enter site/project name"></label><br><br>
-  <form id="inputForm">
-    <label>Space Type: <input type="text" id="spaceType" required></label><br><br>
-    <label>Feet: <input type="number" id="feet" step="1" required></label>
-    <label>Inch: <input type="number" id="inch" step="1" required></label><br><br>
-    <label>Feet2: <input type="number" id="feet2" step="1" required></label>
-    <label>Inch2: <input type="number" id="inch2" step="1" required></label><br><br>
-    <label>Rate: <input type="number" id="rate" required></label>
-    <label>Floor Count: <input type="number" id="floorCount" value="1" required></label><br><br>
-    <label>Type: 
-      <select id="entryType">
-        <option value="add">Add</option>
-        <option value="less">Less</option>
-      </select>
-    </label><br><br>
-    <button type="submit">Add Entry</button>
-  </form>
+    <form id="inputForm">
+      <div class="form-grid">
+        <label>Space Type:<br><input type="text" id="spaceType" class="input" required></label>
+        <label>Feet:<br><input type="number" id="feet" class="input" step="1" required></label>
+        <label>Inch:<br><input type="number" id="inch" class="input" step="1" required></label>
+        <label>Feet2:<br><input type="number" id="feet2" class="input" step="1" required></label>
+        <label>Inch2:<br><input type="number" id="inch2" class="input" step="1" required></label>
+        <label>Rate:<br><input type="number" id="rate" class="input" required></label>
+        <label>Floor Count:<br><input type="number" id="floorCount" class="input" value="1" required></label>
+        <label>Type:<br>
+          <select id="entryType" class="input">
+            <option value="add">Add</option>
+            <option value="less">Less</option>
+          </select>
+        </label>
+      </div>
+      <div class="form-row center">
+        <button type="submit" class="button primary">Add Entry</button>
+      </div>
+    </form>
+  </section>
 
-  <h3>Add Entries</h3>
-  <table id="addTable">
-    <thead>
-      <tr>
-        <th>#</th><th>Space Type</th><th>Feet</th><th>Inch</th><th>Feet2</th><th>Inch2</th><th>Area</th><th>Rate</th><th>Amount</th><th>Floor</th><th>Total</th><th>Action</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <section class="card">
+    <h3>Add Entries</h3>
+    <div class="table-wrapper">
+      <table id="addTable" class="data-table">
+        <thead>
+          <tr>
+            <th>#</th><th>Space Type</th><th>Feet</th><th>Inch</th><th>Feet2</th><th>Inch2</th>
+            <th>Area</th><th>Rate</th><th>Amount</th><th>Floor</th><th>Total</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
 
-  <h3>Less Entries</h3>
-  <table id="lessTable">
-    <thead>
-      <tr>
-        <th>#</th><th>Space Type</th><th>Feet</th><th>Inch</th><th>Feet2</th><th>Inch2</th><th>Area</th><th>Rate</th><th>Amount</th><th>Floor</th><th>Total</th><th>Action</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <section class="card">
+    <h3>Less Entries</h3>
+    <div class="table-wrapper">
+      <table id="lessTable" class="data-table">
+        <thead>
+          <tr>
+            <th>#</th><th>Space Type</th><th>Feet</th><th>Inch</th><th>Feet2</th><th>Inch2</th>
+            <th>Area</th><th>Rate</th><th>Amount</th><th>Floor</th><th>Total</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
 
-  <h3 style="font-size: 16px;">Sub-Total Add: ₹<span id="grandAddTotal">0</span></h3>
-  <h3 style="font-size: 16px;">Less Total: ₹<span id="lessTotal">0</span></h3>
-  <h2 style="font-size: 20px;">Net Total: ₹<span id="netTotal">0</span></h2>
-  
-  <h3 style="font-size: 16px;">Amount Received: ₹<input type="number" id="amountReceived" value="0" oninput="updateBalance()"></h3>
-  <h2 style="font-size: 20px; color: #b30000;">Balance: ₹<span id="balance">0</span></h2>
+  <section class="card totals">
+    <h3>Sub-Total Add: ₹<span id="grandAddTotal">0</span></h3>
+    <h3>Less Total: ₹<span id="lessTotal">0</span></h3>
+    <h2>Net Total: ₹<span id="netTotal">0</span></h2>
+    <h3>Amount Received: ₹<input type="number" id="amountReceived" value="0" class="input small" oninput="updateBalance()"></h3>
+    <h2 class="highlight">Balance: ₹<span id="balance">0</span></h2>
+  </section>
 
-  <button onclick="generatePDF()" style="font-size: 18px; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px;">
-    Download PDF
-  </button>
+  <div class="center">
+    <button onclick="generatePDF()" class="button download">Download PDF</button>
+  </div>
 
-  <script>
-    let entries = [];
-    let srNo = 1;
-
-    const addTable = document.querySelector("#addTable tbody");
-    const lessTable = document.querySelector("#lessTable tbody");
-
-    function updateBalance() {
-      const totalAdd = entries.filter(e => e.type === 'add').reduce((s, e) => s + e.total, 0);
-      const totalLess = entries.filter(e => e.type === 'less').reduce((s, e) => s + e.total, 0);
-      const received = parseFloat(document.getElementById("amountReceived").value || 0);
-      document.getElementById("grandAddTotal").innerText = totalAdd.toFixed(0);
-      document.getElementById("lessTotal").innerText = totalLess.toFixed(0);
-      document.getElementById("netTotal").innerText = (totalAdd - totalLess).toFixed(0);
-      document.getElementById("balance").innerText = (totalAdd - totalLess - received).toFixed(0);
-    }
-
-    function renderTables() {
-      addTable.innerHTML = "";
-      lessTable.innerHTML = "";
-      let addCount = 1, lessCount = 1;
-
-      entries.forEach((e, idx) => {
-        const rowHTML = `
-          <td>${e.type === 'add' ? addCount++ : lessCount++}</td>
-          <td>${e.spaceType}</td>
-          <td>${e.feet}</td>
-          <td>${e.inch}</td>
-          <td>${e.feet2}</td>
-          <td>${e.inch2}</td>
-          <td>${e.area}</td>
-          <td>${e.rate}</td>
-          <td>${e.amount}</td>
-          <td>${e.floorCount}</td>
-          <td>${e.total}</td>
-          <td>
-            <button onclick="editEntry(${idx})">Edit</button>
-            <button onclick="deleteEntry(${idx})">Delete</button>
-          </td>
-        `;
-        const tr = document.createElement("tr");
-        tr.innerHTML = rowHTML;
-        if (e.type === "add") addTable.appendChild(tr);
-        else lessTable.appendChild(tr);
-      });
-
-      updateBalance();
-    }
-
-    function deleteEntry(index) {
-      entries.splice(index, 1);
-      renderTables();
-    }
-
-    function editEntry(index) {
-      const e = entries[index];
-      document.getElementById("spaceType").value = e.spaceType;
-      document.getElementById("feet").value = e.feet;
-      document.getElementById("inch").value = e.inch;
-      document.getElementById("feet2").value = e.feet2;
-      document.getElementById("inch2").value = e.inch2;
-      document.getElementById("rate").value = e.rate;
-      document.getElementById("floorCount").value = e.floorCount;
-      document.getElementById("entryType").value = e.type;
-      entries.splice(index, 1);
-      renderTables();
-    }
-
-    document.getElementById("inputForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const feet = parseFloat(document.getElementById("feet").value);
-      const inch = parseFloat(document.getElementById("inch").value);
-      const feet2 = parseFloat(document.getElementById("feet2").value);
-      const inch2 = parseFloat(document.getElementById("inch2").value);
-      const rate = parseFloat(document.getElementById("rate").value);
-      const floorCount = parseInt(document.getElementById("floorCount").value);
-      const spaceType = document.getElementById("spaceType").value;
-      const type = document.getElementById("entryType").value;
-
-      const length = feet + inch / 12;
-      const width = feet2 + inch2 / 12;
-      const area = +(length * width).toFixed(2);
-      const amount = +(area * rate).toFixed(0);
-      const total = amount * floorCount;
-
-      entries.push({ spaceType, feet, inch, feet2, inch2, rate, floorCount, type, area, amount, total });
-      document.getElementById("inputForm").reset();
-      renderTables();
-    });
-
-    function generatePDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-
-      const site = document.getElementById("siteName").value || "Construction Report";
-      doc.text(`Invoice for site: ${site}`, 14, 16);
-
-      const addRows = entries.filter(e => e.type === 'add').map(e => [
-        e.spaceType, e.feet, e.inch, e.feet2, e.inch2, e.area, e.rate, e.amount, e.floorCount, e.total
-      ]);
-      const lessRows = entries.filter(e => e.type === 'less').map(e => [
-        e.spaceType, e.feet, e.inch, e.feet2, e.inch2, e.area, e.rate, e.amount, e.floorCount, e.total
-      ]);
-
-     let y = 30;
-
-      doc.setFont("helvetica");
-      doc.setFontSize(12);
-      doc.text("Planned Tile Work Area", 14, y);
-      doc.setFontSize(11);
-      y += 5;
-
-      doc.autoTable({
-        startY: y,
-        head: [['Space Type', 'Feet', 'Inch', 'Feet2', 'Inch2', 'Area', 'Rate', 'Amount', 'Floor', 'Total']],
-        body: addRows
-      });
-
-      y = doc.lastAutoTable.finalY + 10;
-
-      doc.setFont("helvetica");
-      doc.setFontSize(12);
-      doc.text("Excluded Areas (Pre-built) to be deducted", 14, y);
-      doc.setFontSize(11);
-      y += 5;
-
-      doc.autoTable({
-        startY: y,
-        head: [['Space Type', 'Feet', 'Inch', 'Feet2', 'Inch2', 'Area', 'Rate', 'Amount', 'Floor', 'Total']],
-        body: lessRows
-      });
-
-      y = doc.lastAutoTable.finalY + 10;
-
-      const totalAdd = entries.filter(e => e.type === 'add').reduce((s, e) => s + e.total, 0);
-      const totalLess = entries.filter(e => e.type === 'less').reduce((s, e) => s + e.total, 0);
-      const received = parseFloat(document.getElementById("amountReceived").value || 0);
-      const net = totalAdd - totalLess;
-      const balance = net - received;
-
-      const yStart = doc.lastAutoTable.finalY + 10;
-      doc.setFontSize(12);
-
-      const lines = [
-        { text: `Sub-Total Add: ${totalAdd}`, bold: false, color: [100, 100, 100] },
-        { text: `Less Total: ${totalLess}`, bold: false, color: [100, 100, 100] },
-        { text: `Net Total: ${net}`, bold: true, color: [0, 0, 0] },
-        { text: `Amount Received: ${received}`, bold: false, color: [34, 139, 34] },
-        { text: `Balance: ${balance}`, bold: true, color: balance > 0 ? [200, 0, 0] : [0, 128, 0] }
-      ];
-
-      lines.forEach((line, i) => {
-        doc.setTextColor(...line.color);
-        doc.setFont("helvetica", line.bold ? "bold" : "normal");
-        doc.text(line.text, 14, yStart + i * 10);
-      });
-
-      const fileName = `Tiles_Work_Invoice_${site.replace(/\s+/g, '_')}.pdf`;
-      doc.save(fileName);
-    }
-  </script>
-
+  <script src="script.js"></script>
+  <script src="generatepdf.js"></script>
 </body>
 </html>
