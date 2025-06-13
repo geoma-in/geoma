@@ -70,7 +70,7 @@ function generatePDF() {
         alternateRowStyles: { fillColor: [245, 245, 245] },
         margin: { left: marginX, right: marginX },
         head: [['Space-Type', 'Len-Ft', 'Len-In', 'Wid-Ft', 'Wid-In', 'Area', 'Rate', 'Amount', 'Floor', 'Total']],
-        body: addRows
+        body: lessRows
     });
 
     function formatNumber(value) {
