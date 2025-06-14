@@ -53,7 +53,7 @@ function generatePDF() {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(11);
     doc.setTextColor(0);
-    doc.text(`${site}`, marginX, 50, {align: "left"});
+    doc.text(`${site}`, marginX, 50, { align: "left" });
 
     let y = 60;
 
@@ -88,7 +88,7 @@ function generatePDF() {
         y = doc.lastAutoTable.finalY + 10;
     }
 
-    
+
 
     if (runRows.length > 0) {
         doc.autoTable({
@@ -153,40 +153,56 @@ function generatePDF() {
         const net = subtotal - totalLess;
         const balance = net - received;
 
-        const summaryX = 140;
-        const valueX = 194;
-        const startY = (doc.lastAutoTable?.finalY || 60) + 12;
-        const rowHeight = 9;
-
         const summaryRows = [
-            { label: "Sub-Total", value: subtotal, color: [80, 80, 80] },
-            { label: "Less Total", value: totalLess, color: [80, 80, 80] },
-            { label: "Net Total", value: net, color: [0, 102, 204] },
-            { label: "Amount Received", value: received, color: [0, 128, 0] },
-            {
-                label: "Balance",
-                value: balance,
-                color: balance > 0 ? [200, 0, 0] : [0, 150, 0]
-            }
+            ["Sub-Total", formatNumber(subtotal)],
+            ["Less Total", formatNumber(totalLess)],
+            ["Net Total", formatNumber(net)],
+            ["Amount Received", formatNumber(received)],
+            ["Balance", formatNumber(balance)]
         ];
 
-        summaryRows.forEach((row, i) => {
-            const currentY = startY + i * rowHeight;
+        formattedRows = summaryRows;
 
-            if (i % 2 === 1) {
-                doc.setFillColor(242, 242, 242);
-                doc.rect(summaryX - 3, currentY - 6, valueX - (summaryX - 5), rowHeight, 'F');
+        const safeBottom = 287;
+        const spaceNeeded = formattedRows.length * 10 + 20;
+
+        let summaryStartY = doc.lastAutoTable.finalY + 12;
+        if (summaryStartY + spaceNeeded > safeBottom) {
+            doc.addPage();
+            summaryStartY = 20;
+        }
+
+        doc.autoTable({
+            startY: summaryStartY,
+            margin: { left: 140 },
+            styles: { font: 'helvetica', fontSize: 10 },
+            bodyStyles: { textColor: [80, 80, 80] },
+            headStyles: { fillColor: [240, 240, 240] },
+            columnStyles: {
+                0: { halign: 'left', fontStyle: 'bold' },
+                1: { halign: 'right', fontStyle: 'bold', font: 'courier', fontSize: 11}
+            },
+            body: summaryRows,
+            didParseCell: function (data) {
+                const rowIndex = data.row.index;
+                const colIndex = data.column.index;
+                const label = data.cell.raw;
+
+                if (label === "Net Total" || (rowIndex === 2 && colIndex === 1)) {
+                    data.cell.styles.fontStyle = 'bold';
+                    data.cell.styles.textColor = [0, 102, 204];
+                }
+
+                if (label === "Amount Received" || (rowIndex === 3 && colIndex === 1)) {
+                    data.cell.styles.fontStyle = 'bold';
+                    data.cell.styles.textColor = [0, 128, 0];
+                }
+
+                if (label === "Balance" || (rowIndex === 4 && colIndex === 1)) {
+                    data.cell.styles.fontStyle = 'bold';
+                    data.cell.styles.textColor = balance > 0 ? [200, 0, 0] : [0, 150, 0];
+                }
             }
-
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(10);
-            doc.setTextColor(...row.color);
-            doc.text(row.label, summaryX, currentY);
-
-            const numStr = formatNumber(row.value);
-            doc.setFont("courier", "bold");
-            doc.setFontSize(11);
-            doc.text(numStr, valueX, currentY, { align: 'right' });
         });
     }
 
