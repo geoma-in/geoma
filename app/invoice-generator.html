@@ -39,10 +39,10 @@
           </select>
         </label>
         <label id="label-spaceType">Space Type:<br><input type="text" id="spaceType" class="input" required></label>
-        <label id="label-feet">Feet:<br><input type="number" id="feet" class="input" step="1" required></label>
-        <label id="label-inch">Inch:<br><input type="number" id="inch" class="input" step="1"></label>
-        <label id="label-feet2">Feet2:<br><input type="number" id="feet2" class="input" step="1"></label>
-        <label id="label-inch2">Inch2:<br><input type="number" id="inch2" class="input" step="1"></label>
+        <label id="label-feet">Feet:<br><input type="number" id="feet" class="input" step="any" required></label>
+        <label id="label-inch">Inch:<br><input type="number" id="inch" value="0" class="input" step="1"></label>
+        <label id="label-feet2">Feet2:<br><input type="number" id="feet2" class="input" step="any"></label>
+        <label id="label-inch2">Inch2:<br><input type="number" id="inch2" value="0" class="input" step="1"></label>
         <label id="label-rate">Rate:<br><input type="number" id="rate" class="input"></label>
       </div>
       <div class="form-row center">
@@ -174,29 +174,29 @@
 
       if (type === "running") {
         labelSpaceType.innerHTML = `Space Type:<br><input type="text" id="spaceType" class="input" required>`;
-        labelFeet.innerHTML = `Running Feet:<br><input type="number" id="feet" class="input" step="1" required>`;
+        labelFeet.innerHTML = `Running Feet:<br><input type="number" id="feet" class="input" step="any" required>`;
         labelRate.innerHTML = `Rate:<br><input type="number" id="rate" class="input" required>`;
-        labelInch.innerHTML = `Inch:<br><input type="number" id="inch" class="input" step="1">`;
-        labelFeet2.innerHTML = `Feet2:<br><input type="number" id="feet2" class="input" step="1">`;
-        labelInch2.innerHTML = `Inch2:<br><input type="number" id="inch2" class="input" step="1">`;
+        labelInch.innerHTML = `Inch:<br><input type="number" id="inch" value="0" class="input" step="1">`;
+        labelFeet2.innerHTML = `Feet2:<br><input type="number" id="feet2" class="input" step="any">`;
+        labelInch2.innerHTML = `Inch2:<br><input type="number" id="inch2" value="0" class="input" step="1">`;
         labelInch.style.display = "none";
         labelFeet2.style.display = "none";
         labelInch2.style.display = "none";
       } else if (type === "misc") {
         labelSpaceType.innerHTML = `Charge Type:<br><input type="text" id="spaceType" class="input" required>`;
-        labelFeet.innerHTML = `Days:<br><input type="number" id="feet" class="input" step="1" required>`;
-        labelInch.innerHTML = `Extra Hours:<br><input type="number" id="inch" class="input" step="1" required>`;
+        labelFeet.innerHTML = `Days:<br><input type="number" id="feet" class="input" step="any" required>`;
+        labelInch.innerHTML = `Extra Hours:<br><input type="number" id="inch" value="0" class="input" step="1" required>`;
         labelRate.innerHTML = `Rate/Day:<br><input type="number" id="rate" class="input" required>`;
-        labelFeet2.innerHTML = `Feet2:<br><input type="number" id="feet2" class="input" step="1">`;
-        labelInch2.innerHTML = `Inch2:<br><input type="number" id="inch2" class="input" step="1">`;
+        labelFeet2.innerHTML = `Feet2:<br><input type="number" id="feet2" class="input" step="any">`;
+        labelInch2.innerHTML = `Inch2:<br><input type="number" id="inch2" value="0" class="input" step="1">`;
         labelFeet2.style.display = "none";
         labelInch2.style.display = "none";
       } else {
         labelSpaceType.innerHTML = `Space Type:<br><input type="text" id="spaceType" class="input" required>`;
-        labelFeet.innerHTML = `Feet:<br><input type="number" id="feet" class="input" step="1" required>`;
-        labelInch.innerHTML = `Inch:<br><input type="number" id="inch" class="input" step="1" required>`;
-        labelFeet2.innerHTML = `Feet2:<br><input type="number" id="feet2" class="input" step="1" required>`;
-        labelInch2.innerHTML = `Inch2:<br><input type="number" id="inch2" class="input" step="1" required>`;
+        labelFeet.innerHTML = `Feet:<br><input type="number" id="feet" class="input" step="any" required>`;
+        labelInch.innerHTML = `Inch:<br><input type="number" id="inch" value="0" class="input" step="1" required>`;
+        labelFeet2.innerHTML = `Feet2:<br><input type="number" id="feet2" class="input" step="any" required>`;
+        labelInch2.innerHTML = `Inch2:<br><input type="number" id="inch2" value="0" class="input" step="1" required>`;
         labelRate.innerHTML = `Rate:<br><input type="number" id="rate" class="input" required>`;
       }
     }
