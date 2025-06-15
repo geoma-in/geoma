@@ -211,6 +211,6 @@ function generatePDF() {
     doc.setTextColor(60, 60, 60);
     doc.text("Thank you for your business!", pageWidth / 2, 287, { align: "center" });
 
-    const fileName = `Tiles_Work_Invoice_${site.replace(/\s+/g, '_')}.pdf`;
+    const fileName = `Invoice_${site.replace(/\s+/g, '_')}.pdf`;
     doc.save(fileName);
 }
