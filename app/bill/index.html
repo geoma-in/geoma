@@ -4,8 +4,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Invoice Generator</title>
+  <title>Bill Generator</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="bill-icon-512.png">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="bill-apple-touch-icon.png">
+  <meta name="theme-color" content="#ffffff">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
   <script>
@@ -21,8 +26,8 @@
       <label>Work Type:<br><input type="text" id="workType" placeholder="Type of Work" class="input"></label>
       <label>Mobile Number:<br><input type="tel" id="mobileNumber" placeholder="Mobile number" class="input"
           maxlength="10" pattern="\d{10}" required></label>
-      <label>Email:<br><input type="text" id="email" placeholder="youremail@domain.com" class="input"></label>
-      <label>Address:<br><input type="text" id="address" placeholder="Address" class="input"></label>
+      <label>Email:<br><input type="text" id="email" placeholder="youremail@domain.com" class="input" autocomplete="email"></label>
+      <label>Address:<br><input type="text" id="address" placeholder="Address" class="input" autocomplete="address"></label>
       <label>Site Name:<br><input type="text" id="siteName" placeholder="Site/Project name" class="input"></label>
     </div>
 
@@ -38,10 +43,10 @@
           </select>
         </label>
         <label id="label-spaceType">Space Type:<br><input type="text" id="spaceType" class="input" required></label>
-        <label id="label-feet">Feet:<br><input type="number" id="feet" class="input" step="1" required></label>
-        <label id="label-inch">Inch:<br><input type="number" id="inch" class="input" step="1"></label>
-        <label id="label-feet2">Feet2:<br><input type="number" id="feet2" class="input" step="1"></label>
-        <label id="label-inch2">Inch2:<br><input type="number" id="inch2" class="input" step="1"></label>
+        <label id="label-feet">Feet:<br><input type="number" id="feet" class="input" step="any" required></label>
+        <label id="label-inch">Inch:<br><input type="number" id="inch" value="0" class="input" step="1"></label>
+        <label id="label-feet2">Feet2:<br><input type="number" id="feet2" class="input" step="any"></label>
+        <label id="label-inch2">Inch2:<br><input type="number" id="inch2" value="0" class="input" step="1"></label>
         <label id="label-rate">Rate:<br><input type="number" id="rate" class="input"></label>
       </div>
       <div class="form-row center">
@@ -173,29 +178,29 @@
 
       if (type === "running") {
         labelSpaceType.innerHTML = `Space Type:<br><input type="text" id="spaceType" class="input" required>`;
-        labelFeet.innerHTML = `Running Feet:<br><input type="number" id="feet" class="input" step="1" required>`;
+        labelFeet.innerHTML = `Running Feet:<br><input type="number" id="feet" class="input" step="any" required>`;
         labelRate.innerHTML = `Rate:<br><input type="number" id="rate" class="input" required>`;
-        labelInch.innerHTML = `Inch:<br><input type="number" id="inch" class="input" step="1">`;
-        labelFeet2.innerHTML = `Feet2:<br><input type="number" id="feet2" class="input" step="1">`;
-        labelInch2.innerHTML = `Inch2:<br><input type="number" id="inch2" class="input" step="1">`;
+        labelInch.innerHTML = `Inch:<br><input type="number" id="inch" value="0" class="input" step="1">`;
+        labelFeet2.innerHTML = `Feet2:<br><input type="number" id="feet2" class="input" step="any">`;
+        labelInch2.innerHTML = `Inch2:<br><input type="number" id="inch2" value="0" class="input" step="1">`;
         labelInch.style.display = "none";
         labelFeet2.style.display = "none";
         labelInch2.style.display = "none";
       } else if (type === "misc") {
         labelSpaceType.innerHTML = `Charge Type:<br><input type="text" id="spaceType" class="input" required>`;
-        labelFeet.innerHTML = `Days:<br><input type="number" id="feet" class="input" step="1" required>`;
-        labelInch.innerHTML = `Extra Hours:<br><input type="number" id="inch" class="input" step="1">`;
+        labelFeet.innerHTML = `Days:<br><input type="number" id="feet" class="input" step="any" required>`;
+        labelInch.innerHTML = `Extra Hours:<br><input type="number" id="inch" value="0" class="input" step="1" required>`;
         labelRate.innerHTML = `Rate/Day:<br><input type="number" id="rate" class="input" required>`;
-        labelFeet2.innerHTML = `Feet2:<br><input type="number" id="feet2" class="input" step="1">`;
-        labelInch2.innerHTML = `Inch2:<br><input type="number" id="inch2" class="input" step="1">`;
+        labelFeet2.innerHTML = `Feet2:<br><input type="number" id="feet2" class="input" step="any">`;
+        labelInch2.innerHTML = `Inch2:<br><input type="number" id="inch2" value="0" class="input" step="1">`;
         labelFeet2.style.display = "none";
         labelInch2.style.display = "none";
       } else {
         labelSpaceType.innerHTML = `Space Type:<br><input type="text" id="spaceType" class="input" required>`;
-        labelFeet.innerHTML = `Feet:<br><input type="number" id="feet" class="input" step="1" required>`;
-        labelInch.innerHTML = `Inch:<br><input type="number" id="inch" class="input" step="1" required>`;
-        labelFeet2.innerHTML = `Feet2:<br><input type="number" id="feet2" class="input" step="1" required>`;
-        labelInch2.innerHTML = `Inch2:<br><input type="number" id="inch2" class="input" step="1" required>`;
+        labelFeet.innerHTML = `Feet:<br><input type="number" id="feet" class="input" step="any" required>`;
+        labelInch.innerHTML = `Inch:<br><input type="number" id="inch" value="0" class="input" step="1" required>`;
+        labelFeet2.innerHTML = `Feet2:<br><input type="number" id="feet2" class="input" step="any" required>`;
+        labelInch2.innerHTML = `Inch2:<br><input type="number" id="inch2" value="0" class="input" step="1" required>`;
         labelRate.innerHTML = `Rate:<br><input type="number" id="rate" class="input" required>`;
       }
     }
