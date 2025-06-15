@@ -680,3 +680,20 @@ footer a:hover {
 .author-bio a:hover {
     text-decoration: underline;
 }
+
+.cta-button {
+  display: inline-block;
+  background-color: #007bff; /* Bootstrap blue */
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: #0056b3;
+}
