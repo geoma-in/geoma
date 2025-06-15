@@ -6,6 +6,7 @@ function generatePDF() {
         return val ? `${label}: ${val}` : " ";
     };
     const site = labelIfPresent("siteName", "Site");
+    const siteout = site.replace(/^Site:\s*/, '').replace(/\s+/g, '_');
     const vendor = document.getElementById("vendorName").value || "Invoice";
     const worktype = document.getElementById("workType").value || " ";
     const mobile = labelIfPresent("mobileNumber", "Mobile");
@@ -180,7 +181,7 @@ function generatePDF() {
             headStyles: { fillColor: [240, 240, 240] },
             columnStyles: {
                 0: { halign: 'left', fontStyle: 'bold' },
-                1: { halign: 'right', fontStyle: 'bold', font: 'courier', fontSize: 11}
+                1: { halign: 'right', fontStyle: 'bold', font: 'courier', fontSize: 11 }
             },
             body: summaryRows,
             didParseCell: function (data) {
@@ -211,6 +212,6 @@ function generatePDF() {
     doc.setTextColor(60, 60, 60);
     doc.text("Thank you for your business!", pageWidth / 2, 287, { align: "center" });
 
-    const fileName = `Invoice_${site.replace(/\s+/g, '_')}.pdf`;
+    const fileName = `Invoice_${siteout}.pdf`;
     doc.save(fileName);
 }
