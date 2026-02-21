@@ -1,0 +1,12 @@
+# Robots.txt for Geoma.in
+User-agent: *
+Allow: /
+Allow: /posts/
+Allow: /app/
+
+# Disallow system files to save crawl budget
+Disallow: /js/
+Disallow: /css/
+Disallow: /images/
+
+Sitemap: https://geoma.in/sitemap.xml
