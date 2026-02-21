@@ -1,18 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
-  <url><loc>https://geoma.in/</loc><priority>1.00</priority></url>
-  <url><loc>https://geoma.in/posts/posts.html</loc><priority>0.90</priority></url>
+  <url>
+    <loc>https://geoma.in/</loc>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>https://geoma.in/posts/posts.html</loc>
+    <priority>0.90</priority>
+  </url>
 
-  <url><loc>https://geoma.in/app/index.html</loc><priority>0.85</priority></url>
-  <url><loc>https://geoma.in/app/bill/index.html</loc><priority>0.80</priority></url>
+  <url>
+    <loc>https://geoma.in/app/index.html</loc>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://geoma.in/app/bill/index.html</loc>
+    <priority>0.80</priority>
+  </url>
 
-  <url><loc>https://geoma.in/posts/applications-of-remote-sensing-in-agriculture.html</loc><priority>0.75</priority></url>
-  <url><loc>https://geoma.in/posts/clipping-raster-data-using-gdal-in-python.html</loc><priority>0.75</priority></url>
-  <url><loc>https://geoma.in/posts/how-to-resample-sentinel-2-satellite-imagery-using-gdal.html</loc><priority>0.75</priority></url>
+  <url>
+    <loc>https://geoma.in/app/ratelist/index.html</loc>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://geoma.in/app/bill/GoodsBill/index.html</loc>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://geoma.in/app/bill/ConstuctionBill/index.html</loc>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://geoma.in/app/bill/Proforma/index.html</loc>
+    <priority>0.70</priority>
+  </url>
 
-  <url><loc>https://geoma.in/app/bill/GoodsBill/index.html</loc><priority>0.70</priority></url>
-  <url><loc>https://geoma.in/app/bill/ConstuctionBill/index.html</loc><priority>0.70</priority></url>
-  <url><loc>https://geoma.in/app/bill/Proforma/index.html</loc><priority>0.70</priority></url>
+  <url>
+    <loc>https://geoma.in/posts/applications-of-remote-sensing-in-agriculture.html</loc>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://geoma.in/posts/clipping-raster-data-using-gdal-in-python.html</loc>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://geoma.in/posts/how-to-resample-sentinel-2-satellite-imagery-using-gdal.html</loc>
+    <priority>0.75</priority>
+  </url>
 
 </urlset>
