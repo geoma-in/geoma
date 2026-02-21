@@ -1,33 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Geoma Apps</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      margin-top: 50px;
-    }
-    a {
-      display: inline-block;
-      margin: 20px;
-      padding: 15px 25px;
-      font-size: 18px;
-      background-color: #007bff;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-    }
-    a:hover {
-      background-color: #0056b3;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools & Apps | GEOMA</title>
+    <link rel="stylesheet" href="../../css/style.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* Essential layout fixes for sub-pages */
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f8fafc;
+            font-family: 'Open Sans', sans-serif;
+        }
+        
+        main { flex: 1; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Coming Soon Specifics */
+        .coming-soon-container {
+            text-align: center;
+            padding: 80px 20px;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .status-badge {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 24px;
+        }
+
+        .app-highlight {
+            background: #ffffff;
+            padding: 50px 30px;
+            border-radius: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+            margin-top: 30px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .app-highlight i {
+            font-size: 4.5rem;
+            color: #3b82f6;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .app-highlight h3 {
+            font-size: 2rem;
+            margin: 0 0 15px 0;
+            color: #1e293b;
+        }
+
+        .app-highlight p {
+            color: #64748b;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* Button Styling to match Geoma */
+        .cta-button, .btn-container {
+            background-color: #3b82f6;
+            color: white !important;
+            padding: 14px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+        }
+
+        .upcoming-list {
+            margin-top: 60px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .upcoming-item {
+            background: #ffffff;
+            padding: 30px 20px;
+            border-radius: 16px;
+            border: 2px dashed #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .upcoming-item:hover {
+            border-color: #3b82f6;
+            background: #f1f5f9;
+        }
+
+        .upcoming-item h4 {
+            margin: 10px 0 5px 0;
+            color: #334155;
+        }
+
+        .upcoming-item p {
+            color: #94a3b8;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            .app-highlight { padding: 30px 20px; }
+            .app-highlight h3 { font-size: 1.5rem; }
+        }
+    </style>
 </head>
 <body>
-  <h1>Coming Soon...</h1>
-  <h2>Currently Explore Our Bill Generator - Link Below</h2>
-  <a href="/app/bill/">🧾 Bill Generator</a>
+    <header>
+        <div class="header-container">
+            <h1 class="logo">
+                <a href="/">Geoma</a>
+            </h1>
+            <nav id="nav-menu">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/app/bill/">Bills</a></li>
+                    <li><a href="/posts/posts.html">Blog</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>       
+
+    <main class="container">
+        <section class="coming-soon-container">
+            <span class="status-badge">Innovation in Progress</span>
+            <h2 style="font-size: 2.5rem; color: #0f172a; margin-bottom: 10px;">More Tools are Coming!</h2>
+            <p style="color: #475569; font-size: 1.1rem;">We are building a suite of smart tools to help you innovate and discover.</p>
+
+            <div class="app-highlight">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <h3>Bill Generator is Live!</h3>
+                <p>Generate professional Construction and Goods invoices instantly with our easy-to-use platform.</p>
+                <a href="/app/bill/" class="cta-button">Explore Bill Generator</a>
+            </div>
+
+            <div class="upcoming-list">
+                <div class="upcoming-item">
+                    <i class="fas fa-list-ul" style="color: #94a3b8; font-size: 2rem;"></i>
+                    <h4>Rate List Generator</h4>
+                    <p style="font-size: 0.8rem;">COMING SOON</p>
+                </div>
+                <div class="upcoming-item">
+                    <i class="fas fa-satellite" style="color: #94a3b8; font-size: 2rem;"></i>
+                    <h4>GIS Data Viewer</h4>
+                    <p style="font-size: 0.8rem;">IN DEVELOPMENT</p>
+                </div>
+                <div class="upcoming-item">
+                    <i class="fas fa-chart-line" style="color: #94a3b8; font-size: 2rem;"></i>
+                    <h4>Agri-Analytics</h4>
+                    <p style="font-size: 0.8rem;">PLANNING STAGE</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 60px;">
+                <a href="/" style="background: transparent; color: #3b82f6 !important; border: 2px solid #3b82f6;" class="btn-container">Return to Homepage</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container" style="text-align: center; padding: 30px; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem;">
+            <p>Copyright © 2024 Geoma - All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/scripts.js"></script>
 </body>
 </html>

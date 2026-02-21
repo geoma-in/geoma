@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Construction Invoice Generator | Geoma</title>
+  <meta name="description" content="Generate detailed construction and work invoices with dynamic calculations for running feet, area, and miscellaneous charges.">
+  
+  <link rel="stylesheet" href="../../../css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  
+  <link rel="icon" href="./favicon.ico">
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#ffffff">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+  
+  <style>
+    /* Tool-specific Overrides for Dynamic Tables */
+    .form-section { margin-top: 2rem; }
+    .input { 
+      width: 100%; border: 1px solid #e2e8f0; padding: 10px; 
+      border-radius: 8px; font-size: 14px; margin-top: 5px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 15px; margin-bottom: 20px;
+    }
+    .card {
+      background: white; border-radius: 12px; padding: 25px;
+      box-shadow: var(--shadow-sm); margin-bottom: 25px; border: 1px solid #f1f5f9;
+    }
+    .data-table {
+      width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px;
+    }
+    .data-table th { background: #f8fafc; color: var(--text-light); padding: 12px; text-align: left; border-bottom: 2px solid #edf2f7; }
+    .data-table td { padding: 12px; border-bottom: 1px solid #edf2f7; }
+    .table-wrapper { overflow-x: auto; }
+    .totals h3 { text-align: right; font-size: 1.1rem; color: var(--text-light); }
+    .totals h2 { text-align: right; color: var(--secondary); margin: 10px 0; }
+    .highlight { color: var(--primary) !important; font-weight: 800; }
+    .center { text-align: center; }
+    .small { max-width: 150px; display: inline-block; }
+  </style>
+  
+  <script>window.jsPDF = window.jspdf.jsPDF;</script>
+</head>
+
+<body>
+  <header>
+    <div class="header-container container">
+        <h1 class="logo"><a href="/">Geoma</a></h1>
+        <div class="hamburger" id="hamburger-icon" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i> 
+        </div>
+        <nav id="nav-menu">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/index.html#about">About</a></li>
+                <li><a href="/posts/posts.html">Blog</a></li>
+                <li><a href="/app/bill/" class="text-blue-600">Tools</a></li>
+                <li><a href="/index.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="form-section card">
+      <h2 style="text-align: left; margin-bottom: 20px; color: var(--primary);">Invoice Generator</h2>
+      <div class="form-grid">
+        <label>Vendor Name:<input type="text" id="vendorName" placeholder="Company/Your name" class="input"></label>
+        <label>Work Type:<input type="text" id="workType" placeholder="Type of Work" class="input"></label>
+        <label>Mobile Number:<input type="tel" id="mobileNumber" placeholder="Mobile number" class="input" maxlength="10"></label>
+        <label>Email:<input type="text" id="email" placeholder="email@domain.com" class="input"></label>
+        <label>Address:<input type="text" id="address" placeholder="Business Address" class="input"></label>
+        <label>Site Name:<input type="text" id="siteName" placeholder="Site/Project name" class="input"></label>
+      </div>
+
+      <form id="inputForm" style="border-top: 1px solid #eee; pt-4;">
+        <h3 style="text-align:left; font-size: 1rem; margin: 20px 0 10px;">Entry Details</h3>
+        <div class="form-grid">
+          <label>Type:
+            <select id="entryType" class="input" required>
+              <option value="" disabled selected>Entry Type</option>
+              <option value="add">Add</option>
+              <option value="running">Running</option>
+              <option value="misc">Miscellaneous</option>
+              <option value="less">Less</option>
+            </select>
+          </label>
+          <label id="label-spaceType">Space Type:<input type="text" id="spaceType" class="input" required></label>
+          <label id="label-feet">Feet:<input type="number" id="feet" class="input" step="any" required></label>
+          <label id="label-inch">Inch:<input type="number" id="inch" value="0" class="input" step="1"></label>
+          <label id="label-feet2">Feet2:<input type="number" id="feet2" class="input" step="any"></label>
+          <label id="label-inch2">Inch2:<input type="number" id="inch2" value="0" class="input" step="1"></label>
+          <label id="label-rate">Rate:<input type="number" id="rate" class="input"></label>
+        </div>
+        <div class="center">
+          <button type="submit" class="btn-container" style="border:none; cursor:pointer;">Add Entry Item</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card">
+      <h3 style="text-align:left;">Measurements (Add)</h3>
+      <div class="table-wrapper">
+        <table id="addTable" class="data-table">
+          <thead>
+            <tr><th>#</th><th>Space Type</th><th>Feet</th><th>Inch</th><th>Feet2</th><th>Inch2</th><th>Area</th><th>Rate</th><th>Amount</th><th>Action</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3 style="text-align:left;">Running Feet Calculation</h3>
+      <div class="table-wrapper">
+        <table id="running-calc" class="data-table">
+          <thead>
+            <tr><th>#</th><th>Space Type</th><th>Running Feet</th><th>Area</th><th>Rate</th><th>Amount</th><th>Action</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3 style="text-align:left;">Miscellaneous Charges</h3>
+      <div class="table-wrapper">
+        <table id="miscellaneous" class="data-table">
+          <thead>
+            <tr><th>#</th><th>Charge Type</th><th>Days</th><th>Extra Hours</th><th>Rate/Day</th><th>Amount</th><th>Action</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3 style="text-align:left;">Deductions (Less)</h3>
+      <div class="table-wrapper">
+        <table id="lessTable" class="data-table">
+          <thead>
+            <tr><th>#</th><th>Space Type</th><th>Feet</th><th>Inch</th><th>Feet2</th><th>Inch2</th><th>Area</th><th>Rate</th><th>Amount</th><th>Action</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card totals">
+      <h3>Sub-Total Add: ₹<span id="grandAddTotal">0</span></h3>
+      <h3>Less Total: ₹<span id="lessTotal">0</span></h3>
+      <h2 style="text-align:right;">Net Total: ₹<span id="netTotal">0</span></h2>
+      <div style="text-align:right; margin: 15px 0;">
+        <span style="font-weight:bold;">Amount Received:</span> 
+        <input type="number" id="amountReceived" value="0" class="input small" oninput="updateBalance()">
+      </div>
+      <h2 class="highlight" style="text-align:right;">Final Balance: ₹<span id="balance">0</span></h2>
+    </section>
+
+    <div class="center" style="margin-bottom: 60px;">
+      <button onclick="generatePDF()" class="btn-container" style="background: #10b981; border:none; cursor:pointer;">
+        <i class="fas fa-file-pdf"></i> Download Professional PDF
+      </button>
+    </div>
+  </main>
+
+  <footer class="bg-white py-10 border-t border-slate-100">
+    <div class="container footer-container">
+        <p style="font-weight:bold;">&copy; 2026 Geoma - All Rights Reserved.</p>
+        <p style="font-size: 0.8rem; margin-top: 5px; opacity: 0.7;">The definitive tool for construction billing and measurements.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="generatepdf.js"></script>
+  <script>
+    let currentType = document.getElementById("entryType").value;
+
+    function updateFormFields() {
+      const type = document.getElementById("entryType").value;
+      if (type === currentType) return;
+      currentType = type;
+
+      const labelSpaceType = document.getElementById("label-spaceType");
+      const labelFeet = document.getElementById("label-feet");
+      const labelInch = document.getElementById("label-inch");
+      const labelFeet2 = document.getElementById("label-feet2");
+      const labelInch2 = document.getElementById("label-inch2");
+      const labelRate = document.getElementById("label-rate");
+      
+      labelInch.style.display = "block";
+      labelFeet2.style.display = "block";
+      labelInch2.style.display = "block";
+
+      if (type === "running") {
+        labelSpaceType.innerHTML = `Space Type:<input type="text" id="spaceType" class="input" required>`;
+        labelFeet.innerHTML = `Running Feet:<input type="number" id="feet" class="input" step="any" required>`;
+        labelRate.innerHTML = `Rate:<input type="number" id="rate" class="input" required>`;
+        labelInch.style.display = "none";
+        labelFeet2.style.display = "none";
+        labelInch2.style.display = "none";
+      } else if (type === "misc") {
+        labelSpaceType.innerHTML = `Charge Type:<input type="text" id="spaceType" class="input" required>`;
+        labelFeet.innerHTML = `Days:<input type="number" id="feet" class="input" step="any" required>`;
+        labelInch.innerHTML = `Extra Hours:<input type="number" id="inch" value="0" class="input" step="1" required>`;
+        labelRate.innerHTML = `Rate/Day:<input type="number" id="rate" class="input" required>`;
+        labelFeet2.style.display = "none";
+        labelInch2.style.display = "none";
+      } else {
+        labelSpaceType.innerHTML = `Space Type:<input type="text" id="spaceType" class="input" required>`;
+        labelFeet.innerHTML = `Feet:<input type="number" id="feet" class="input" step="any" required>`;
+        labelInch.innerHTML = `Inch:<input type="number" id="inch" value="0" class="input" step="1" required>`;
+        labelFeet2.innerHTML = `Feet2:<input type="number" id="feet2" class="input" step="any" required>`;
+        labelInch2.innerHTML = `Inch2:<input type="number" id="inch2" value="0" class="input" step="1" required>`;
+        labelRate.innerHTML = `Rate:<input type="number" id="rate" class="input" required>`;
+      }
+    }
+    document.getElementById("entryType").addEventListener("change", updateFormFields);
+    updateFormFields();
+  </script>
+  <script src="../../../js/scripts.js"></script>
+</body>
+</html>

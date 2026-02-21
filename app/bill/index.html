@@ -1,215 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bill Generator</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="./favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="bill-icon-512.png">
-  <link rel="manifest" href="./manifest.json">
-  <link rel="apple-touch-icon" href="bill-apple-touch-icon.png">
-  <meta name="theme-color" content="#ffffff">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-  <script>
-    window.jsPDF = window.jspdf.jsPDF;
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Bill Generators | Geoma</title>
+    <meta name="description" content="Generate professional GST invoices, goods bills, and construction invoices instantly with Geoma's free productivity tools.">
+    
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        /* Bill Hub Specific Enhancements */
+        .bill-hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        .bill-card {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .bill-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+        .bill-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        .bill-card h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            font-size: 1.5rem;
+        }
+        .bill-card p {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        .hub-header {
+            text-align: center;
+            padding: 60px 0 20px;
+        }
+        .hub-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .hub-header p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+    </style>
 </head>
 
 <body>
-  <section class="form-section card">
-    <h2>Invoice Generator</h2>
-    <div class="form-row">
-      <label>Vendor Name:<br><input type="text" id="vendorName" placeholder="Company/Your name" class="input"></label>
-      <label>Work Type:<br><input type="text" id="workType" placeholder="Type of Work" class="input"></label>
-      <label>Mobile Number:<br><input type="tel" id="mobileNumber" placeholder="Mobile number" class="input"
-          maxlength="10" pattern="\d{10}" required></label>
-      <label>Email:<br><input type="text" id="email" placeholder="youremail@domain.com" class="input" autocomplete="email"></label>
-      <label>Address:<br><input type="text" id="address" placeholder="Address" class="input" autocomplete="address"></label>
-      <label>Site Name:<br><input type="text" id="siteName" placeholder="Site/Project name" class="input"></label>
-    </div>
+    <header>
+        <div class="header-container container">
+            <h1 class="logo">
+                <a href="/">Geoma</a>
+            </h1>
+            <div class="hamburger" id="hamburger-icon" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i> 
+            </div>
+            <nav id="nav-menu">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/index.html#about">About</a></li>
+                    <li><a href="/posts/posts.html">Blog</a></li>
+                    <li><a href="/index.html#tools">Tools</a></li>
+                    <li><a href="/index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>       
 
-    <form id="inputForm">
-      <div class="form-grid">
-        <label>Type:<br>
-          <select id="entryType" class="input" required>
-            <option value="" disabled selected>Entry Type</option>
-            <option value="add">Add</option>
-            <option value="running">Running</option>
-            <option value="misc">Miscellaneous</option>
-            <option value="less">Less</option>
-          </select>
-        </label>
-        <label id="label-spaceType">Space Type:<br><input type="text" id="spaceType" class="input" required></label>
-        <label id="label-feet">Feet:<br><input type="number" id="feet" class="input" step="any" required></label>
-        <label id="label-inch">Inch:<br><input type="number" id="inch" value="0" class="input" step="1"></label>
-        <label id="label-feet2">Feet2:<br><input type="number" id="feet2" class="input" step="any"></label>
-        <label id="label-inch2">Inch2:<br><input type="number" id="inch2" value="0" class="input" step="1"></label>
-        <label id="label-rate">Rate:<br><input type="number" id="rate" class="input"></label>
-      </div>
-      <div class="form-row center">
-        <button type="submit" class="button primary">Add Entry</button>
-      </div>
-    </form>
-  </section>
+    <main class="container">
+        <div class="hub-header">
+            <h2>Professional Bill Generators</h2>
+            <p>Select a specialized tool to generate compliant invoices in seconds.</p>
+        </div>
 
-  <section class="card">
-    <h3>Add Entries</h3>
-    <div class="table-wrapper">
-      <table id="addTable" class="data-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Space Type</th>
-            <th>Feet</th>
-            <th>Inch</th>
-            <th>Feet2</th>
-            <th>Inch2</th>
-            <th>Area</th>
-            <th>Rate</th>
-            <th>Amount</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </section>
+        <section class="bill-hub-grid">
+            <div class="bill-card">
+                <i class="fa-solid fa-boxes-stacked"></i>
+                <h3>Goods Invoice</h3>
+                <p>Designed for retail and wholesale. Includes automated GST calculations, HSN support, and inventory itemization.</p>
+                <a href="/app/bill/GoodsBill/" class="btn-container">Start Generating</a>
+            </div>
 
-  <section class="card">
-    <h3>Running Calc</h3>
-    <div class="table-wrapper">
-      <table id="running-calc" class="data-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Space Type</th>
-            <th>Running Feet</th>
-            <th>Area</th>
-            <th>Rate</th>
-            <th>Amount</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </section>
+            <div class="bill-card">
+                <i class="fa-solid fa-trowel-bricks"></i>
+                <h3>Construction Bill</h3>
+                <p>Specialized for contractors and civil engineers. Manage labor, material costs, and site descriptions efficiently.</p>
+                <a href="/app/bill/ConstuctionBill/" class="btn-container">Start Generating</a>
+            </div>
+        </section>
 
-  <section class="card">
-    <h3>Miscellaneous</h3>
-    <div class="table-wrapper">
-      <table id="miscellaneous" class="data-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Charge Type</th>
-            <th>Days</th>
-            <th>Extra Hours</th>
-            <th>Rate/Day</th>
-            <th>Amount</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </section>
+        <section style="text-align: center; padding: 40px 0 80px;">
+            <p>Facing issues? Email us at <a href="mailto:contact@geoma.in" class="email-link">contact@geoma.in</a></p>
+            <div style="margin-top: 25px;">
+                <a href="/" class="read-more" style="text-transform: none; border-color: #cbd5e1; color: #64748b !important;">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Homepage
+                </a>
+            </div>
+        </section>
+    </main>
 
-  <section class="card">
-    <h3>Less Entries</h3>
-    <div class="table-wrapper">
-      <table id="lessTable" class="data-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Space Type</th>
-            <th>Feet</th>
-            <th>Inch</th>
-            <th>Feet2</th>
-            <th>Inch2</th>
-            <th>Area</th>
-            <th>Rate</th>
-            <th>Amount</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </section>
+    <footer>
+        <div class="container footer-container">
+            <p>&copy; 2026 Geoma - All Rights Reserved.</p>
+            <p style="font-size: 0.8rem; margin-top: 5px; opacity: 0.7;">Powering productivity through geospatial and digital tools.</p>
+        </div>
+    </footer>
 
-  <section class="card totals">
-    <h3>Sub-Total Add: ₹<span id="grandAddTotal">0</span></h3>
-    <h3>Less Total: ₹<span id="lessTotal">0</span></h3>
-    <h2>Net Total: ₹<span id="netTotal">0</span></h2>
-    <h3>Amount Received: ₹<input type="number" id="amountReceived" value="0" class="input small"
-        oninput="updateBalance()"></h3>
-    <h2 class="highlight">Balance: ₹<span id="balance">0</span></h2>
-  </section>
-
-  <div class="center">
-    <button onclick="generatePDF()" class="button download">Download PDF</button>
-  </div>
-
-  <script src="script.js"></script>
-  <script src="generatepdf.js"></script>
-  <script>
-    let currentType = document.getElementById("entryType").value;
-
-    function updateFormFields() {
-      const type = document.getElementById("entryType").value;
-
-      if (type === currentType) return;
-
-      currentType = type;
-
-      const labelSpaceType = document.getElementById("label-spaceType");
-      const labelFeet = document.getElementById("label-feet");
-      const labelInch = document.getElementById("label-inch");
-      const labelFeet2 = document.getElementById("label-feet2");
-      const labelInch2 = document.getElementById("label-inch2");
-      const labelRate = document.getElementById("label-rate");
-      labelInch.style.display = "block";
-      labelFeet2.style.display = "block";
-      labelInch2.style.display = "block";
-
-      if (type === "running") {
-        labelSpaceType.innerHTML = `Space Type:<br><input type="text" id="spaceType" class="input" required>`;
-        labelFeet.innerHTML = `Running Feet:<br><input type="number" id="feet" class="input" step="any" required>`;
-        labelRate.innerHTML = `Rate:<br><input type="number" id="rate" class="input" required>`;
-        labelInch.innerHTML = `Inch:<br><input type="number" id="inch" value="0" class="input" step="1">`;
-        labelFeet2.innerHTML = `Feet2:<br><input type="number" id="feet2" class="input" step="any">`;
-        labelInch2.innerHTML = `Inch2:<br><input type="number" id="inch2" value="0" class="input" step="1">`;
-        labelInch.style.display = "none";
-        labelFeet2.style.display = "none";
-        labelInch2.style.display = "none";
-      } else if (type === "misc") {
-        labelSpaceType.innerHTML = `Charge Type:<br><input type="text" id="spaceType" class="input" required>`;
-        labelFeet.innerHTML = `Days:<br><input type="number" id="feet" class="input" step="any" required>`;
-        labelInch.innerHTML = `Extra Hours:<br><input type="number" id="inch" value="0" class="input" step="1" required>`;
-        labelRate.innerHTML = `Rate/Day:<br><input type="number" id="rate" class="input" required>`;
-        labelFeet2.innerHTML = `Feet2:<br><input type="number" id="feet2" class="input" step="any">`;
-        labelInch2.innerHTML = `Inch2:<br><input type="number" id="inch2" value="0" class="input" step="1">`;
-        labelFeet2.style.display = "none";
-        labelInch2.style.display = "none";
-      } else {
-        labelSpaceType.innerHTML = `Space Type:<br><input type="text" id="spaceType" class="input" required>`;
-        labelFeet.innerHTML = `Feet:<br><input type="number" id="feet" class="input" step="any" required>`;
-        labelInch.innerHTML = `Inch:<br><input type="number" id="inch" value="0" class="input" step="1" required>`;
-        labelFeet2.innerHTML = `Feet2:<br><input type="number" id="feet2" class="input" step="any" required>`;
-        labelInch2.innerHTML = `Inch2:<br><input type="number" id="inch2" value="0" class="input" step="1" required>`;
-        labelRate.innerHTML = `Rate:<br><input type="number" id="rate" class="input" required>`;
-      }
-    }
-
-    document.getElementById("entryType").addEventListener("change", updateFormFields);
-
-    updateFormFields();
-  </script>
-
+    <script src="../../js/scripts.js"></script>
 </body>
-
 </html>

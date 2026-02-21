@@ -3,103 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GEOMA</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <title>Geoma | Insights on Remote Sensing, GIS & Agriculture Technology</title>
+    <meta name="description" content="Geoma is your hub for geospatial expertise, decoding satellite imagery, GIS trends, and precision agriculture. Explore our professional bill and invoice generators.">
+    <meta name="keywords" content="Remote Sensing, GIS, Satellite Imagery, Smart Farming, GDAL Python, GST Invoice Generator, Construction Bill Tool">
     <link rel="canonical" href="https://geoma.in/">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Geoma",
+      "url": "https://geoma.in/",
+      "description": "Insightful articles on remote sensing, GIS, and geospatial technology."
+    }
+    </script>
 </head>
-<!-- Google tag (gtag.js) -->
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-KDQ0G4DMLQ"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-KDQ0G4DMLQ');
 </script>
+
 <body>
     <header>
-        <div class="header-container">
-            <h1 class="logo">
-                <a href="/">Geoma</a>
-            </h1>
-            <div class="hamburger" id="hamburger-icon">
+        <div class="header-container container">
+            <h1 class="logo"><a href="/">Geoma</a></h1>
+            <div class="hamburger" id="hamburger-icon" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i> 
             </div>
             <nav id="nav-menu">
                 <ul>
                     <li><a href="/">Home</a></li>
                     <li><a href="#about">About</a></li>
-                    <li><a href="posts/posts.html">Blog</a></li>
-                    <li><a href="#categories">Categories</a></li>
+                    <li><a href="/posts/posts.html">Blog</a></li>
+                    <li><a href="#tools">Tools</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
         </div>
     </header>       
 
-    <main class="container">
-
+    <main>
         <section class="hero">
-            <img src="images/hero-bg.jpg" class="hero-bg" loading="lazy" alt="Background Image">
+            <img src="images/hero-bg.jpg" class="hero-bg" loading="lazy" alt="Geospatial satellite data analysis background">
             <div class="hero-content">
                 <h2>Welcome to Geoma</h2>
-                <p>Your source for insightful articles on remote sensing, GIS, and more.</p>
+                <p>Your source for insightful articles on remote sensing, GIS, and precision agriculture.</p>
                 <a href="/posts/posts.html" class="btn-container">Explore More Blogs</a>
             </div>
         </section>
 
-        <section class="featured-posts">
-            <h3>Featured Posts</h3>
-            <div class="posts-grid" id="featured-posts-container">
-                <!-- Featured posts will be inserted here dynamically -->
-            </div>
-            <a href="/posts/posts.html" class="btn-container">Explore More Blogs</a>
-        </section>
+        <div class="container">
+            <section class="featured-posts">
+                <h3>Featured Posts</h3>
+                <div class="posts-grid">
+                    <article class="post">
+                        <div class="post-image-container">
+                            <img src="/images/post3.jpg" alt="Applications of Remote Sensing in Agriculture" class="post-image" loading="lazy">
+                        </div>
+                        <h4 class="post-title">Applications of Remote Sensing in Agriculture</h4>
+                        <p class="post-excerpt">Remote sensing has revolutionized modern agriculture, providing spatial data to optimize crop management.</p>
+                        <div class="post-footer">
+                            <a href="/posts/applications-of-remote-sensing-in-agriculture.html" class="read-more">Read More</a>
+                        </div>
+                    </article>
 
-        <section id="about" class="about">
-            <h3>About Geoma</h3>
-            <p>At Geoma, we believe that knowledge has the power to inspire, transform, and create endless possibilities. Our platform is a space where curiosity meets expertise, bringing you insightful articles on remote sensing, GIS, agriculture, technology, and beyond.
-                From decoding satellite imagery to exploring the latest tech trends, we make complex topics simple, engaging, and accessible. Whether you're a student, researcher, or an enthusiast eager to learn, Geoma is your go-to destination for ideas that spark innovation and stories that fuel curiosity.
-                Join us on this journey of discovery—because knowledge isn’t just power, it’s the key to shaping a smarter, better future.</p>
-                
-            <a>🚀 Read. Explore. Innovate. Welcome to Geoma!</a>
-        </section>
+                    <article class="post">
+                        <div class="post-image-container">
+                            <img src="/images/post1.jpg" alt="Clipping Raster Data using GDAL in Python" class="post-image" loading="lazy">
+                        </div>
+                        <h4 class="post-title">Clipping Raster Data using GDAL in Python</h4>
+                        <p class="post-excerpt">Learn how satellite data helps track soil moisture, guide irrigation, and optimize water use through Python.</p>
+                        <div class="post-footer">
+                            <a href="/posts/clipping-raster-data-using-gdal-in-python.html" class="read-more">Read More</a>
+                        </div>
+                    </article>
 
-        <section id="categories" class="categories">
-            <h2>Categories</h2>
-            <div id="categories-grid" class="categories-grid">
-                <!-- Categories will be dynamically added here -->
+                    <article class="post">
+                        <div class="post-image-container">
+                            <img src="/images/post1.jpg" alt="Resample Sentinel-2 Satellite Imagery Using GDAL" class="post-image" loading="lazy">
+                        </div>
+                        <h4 class="post-title">Resample Sentinel-2 Satellite Imagery Using GDAL</h4>
+                        <p class="post-excerpt">A comprehensive guide on resampling 20m and 60m Sentinel-2 bands to a 10m uniform resolution.</p>
+                        <div class="post-footer">
+                            <a href="/posts/how-to-resample-sentinel-2-satellite-imagery-using-gdal.html" class="read-more">Read More</a>
+                        </div>
+                    </article>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="/posts/posts.html" class="btn-container">View All Blogs</a>
+                </div>
+            </section>
+
+            <section id="about" class="about">
+                <div class="about-content">
+                    <h3>About Geoma</h3>
+                    <p>At Geoma, we believe that knowledge has the power to inspire, transform, and create endless possibilities. Our platform is a space where curiosity meets expertise, bringing you insightful articles on <strong>Remote Sensing</strong>, <strong>GIS</strong>, <strong>Agriculture</strong>, and <strong>Technology</strong>.</p>
+                    <p>From decoding satellite imagery to exploring the latest tech trends, we make complex topics simple, engaging, and accessible. Join us on this journey of discovery—because knowledge isn’t just power, it’s the key to shaping a smarter, better future. 🚀</p>
+                </div>
+            </section>
+        </div>
+
+        <section id="tools" class="tools-section">
+            <div class="container">
+                <h2>Geoma Productivity Tools</h2>
+                <p class="section-subtitle">Free utilities designed for the geospatial and construction industry.</p>
+                <div class="tools-grid-mini">
+                    <a href="/app/bill/GoodsBill/" class="tool-mini-card">
+                        <i class="fa-solid fa-box-open"></i>
+                        <span>Goods Invoice</span>
+                    </a>
+                    <a href="/app/bill/ConstuctionBill/" class="tool-mini-card">
+                        <i class="fa-solid fa-trowel-bricks"></i>
+                        <span>Construction Bill</span>
+                    </a>
+                    <a href="/app/bill/" class="tool-mini-card">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                        <span>All Generators</span>
+                    </a>
+                    <a href="/app/" class="tool-mini-card tool-hub-accent">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <span>Tools Hub</span>
+                    </a>
+                </div>
             </div>
-        </section>        
+        </section>
 
         <section id="contact" class="contact">
-            <h2>Contact Us</h2>
+            <div class="container">
+                <h2>Contact Us</h2>
                 <div class="social-icons">
                     <a href="https://www.instagram.com/geoma.in/" class="icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                     <a href="https://www.facebook.com/geoma_in/" class="icon" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
                     <a href="https://www.linkedin.com/in/geoma-india/" class="icon" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
                     <a href="https://x.com/geoma_in" class="icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="https://www.reddit.com/user/geoma-in/" class="icon" aria-label="Reddit"><i class="fab fa-reddit"></i></a>
-                    <!-- <a href="mailto:contact@geoma.in" class="icon" aria-label="Email"><i class="fas fa-envelope"></i></a> -->
                 </div>
-                <p>Email: <a href="mailto:contact@geoma.in">contact@geoma.in</a></p>
-                <a href="/app/" class="cta-button">Explore Geoma Tools</a>
-                <a href="/app/bill/" class="cta-button">Try Our Bill Generator</a>
+                <div class="contact-details">
+                    <p>Have questions about GIS or Remote Sensing?</p>
+                    <p>Email us at: <a href="mailto:contact@geoma.in" class="email-link">contact@geoma.in</a></p>
+                </div>
+            </div>
         </section>
-
     </main>
 
     <footer>
-        <div class="footer-container">
-            <p>Copyright © 2024 Geoma - All Rights Reserved.</p>
+        <div class="container footer-container">
+            <p>&copy; 2026 Geoma - All Rights Reserved.</p>
+            <p style="font-size: 0.8rem; margin-top: 5px; opacity: 0.7;">Shaping the future of Geospatial Knowledge.</p>
         </div>
     </footer>
 
     <script src="js/scripts.js"></script>
-    <script src="js/featured_posts.js"></script>
-    <script src="js/categories.js"></script>
-
 </body>
 </html>

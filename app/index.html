@@ -1,33 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Geoma Apps</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      margin-top: 50px;
-    }
-    a {
-      display: inline-block;
-      margin: 20px;
-      padding: 15px 25px;
-      font-size: 18px;
-      background-color: #007bff;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-    }
-    a:hover {
-      background-color: #0056b3;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geoma Tools | Productivity Hub</title>
+    <meta name="description" content="Discover smart utilities for business and productivity. Generate bills, invoices, and rate lists with Geoma's professional tools.">
+    
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        /* Modern Tool Grid Styling */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        .tool-card {
+            background: var(--white);
+            padding: 50px 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid #f1f5f9;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+        .tool-card i {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        .tool-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        .tool-card p {
+            color: var(--text-light);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        .hub-title {
+            text-align: center;
+            padding: 60px 0 20px;
+        }
+        .hub-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .hub-title p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+    </style>
 </head>
 <body>
-  <h1>Geoma Tools</h1>
-  <a href="/app/bill/">🧾 Bill Generator</a>
-  <a href="/app/ratelist/">📋 Rate List Generator</a>
+    <header>
+        <div class="header-container container">
+            <h1 class="logo">
+                <a href="/">Geoma</a>
+            </h1>
+            <div class="hamburger" id="hamburger-icon" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i> 
+            </div>
+            <nav id="nav-menu">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/index.html#about">About</a></li>
+                    <li><a href="/posts/posts.html">Blog</a></li>
+                    <li><a href="/index.html#tools">Tools</a></li>
+                    <li><a href="/index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>       
+
+    <main class="container">
+        <div class="hub-title">
+            <h2>Geoma Tools</h2>
+            <p>Smart utilities for business and productivity.</p>
+        </div>
+
+        <section class="tools-grid">
+            <a href="/app/bill/" class="tool-card">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <h3>Bill Generators</h3>
+                <p>Create professional GST invoices for goods or construction projects in seconds.</p>
+            </a>
+
+            <a href="/app/ratelist/" class="tool-card">
+                <i class="fa-solid fa-list-check"></i>
+                <h3>Rate List Generator</h3>
+                <p>Easily organize and generate professional rate lists for your products or services.</p>
+            </a>
+        </section>
+
+        <div style="text-align: center; padding-bottom: 80px;">
+            <a href="/" class="read-more" style="text-transform: none; border-color: #cbd5e1; color: #64748b !important;">
+                <i class="fa-solid fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container footer-container">
+            <p>&copy; 2026 Geoma - All Rights Reserved.</p>
+            <p style="font-size: 0.8rem; margin-top: 5px; opacity: 0.7;">Efficiency through technology.</p>
+        </div>
+    </footer>
+
+    <script src="../js/scripts.js"></script>
 </body>
 </html>
