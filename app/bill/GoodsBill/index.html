@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Proforma Invoice Generator | Geoma</title>
-  <meta name="description" content="Generate professional Proforma invoices with GST calculations, UPI QR codes, and custom branding for free.">
+  <title>Invoice Generator | Geoma</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
@@ -13,43 +12,36 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
   <style>
-    /* Prevent Tailwind from overriding standard styling where needed */
     .input { 
-      width: 100%; 
-      border: 1px solid #e2e8f0; 
-      padding: 10px; 
-      font-size: 16px; 
-      border-radius: 8px; 
-      transition: all 0.3s;
+      width: 100%; border: 1px solid #e2e8f0; padding: 10px; 
+      font-size: 16px; border-radius: 8px; transition: all 0.3s;
     }
     .input:focus { border-color: #3b82f6; outline: none; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
 
-    /* A4 Safe Printable Area - Invisible to user but used by html2pdf */
+    /* A4 Preview Styling */
     .a4 {
-      width: 210mm;
-      min-height: 296mm;
-      padding: 10mm;
-      background: white;
-      font-size: 11px;
-      color: #000;
-      box-sizing: border-box;
-      position: relative;
-      margin: 0 auto;
+      width: 210mm; min-height: 296mm; padding: 10mm;
+      background: white; font-size: 11px; color: #000;
+      box-sizing: border-box; position: relative; margin: 0 auto;
+      line-height: 1.4;
     }
 
-    table { border-collapse: collapse; width: 100%; margin-top: -1px; }
-    th, td { border: 1px solid #000; padding: 6px; text-align: left; }
-    th { background: #f8fafc; text-transform: uppercase; font-size: 10px; }
-
-    #invoice-preview-wrapper { 
-      position: absolute; 
-      left: -9999px; 
-      top: 0; 
+    /* Standardized Thin Borders for PDF */
+    #invoice-preview table { border-collapse: collapse; width: 100%; margin-top: -1px; table-layout: fixed; }
+    #invoice-preview th, #invoice-preview td { 
+        border: 0.5pt solid #000; 
+        padding: 6px; 
+        text-align: left; 
+        font-weight: normal;
+        word-wrap: break-word;
     }
+    #invoice-preview th { background: #f8fafc; text-transform: uppercase; font-size: 10px; font-weight: bold; }
+
+    #invoice-preview-wrapper { position: absolute; left: -9999px; top: 0; }
 
     @media (max-width: 640px) {
       #itemsTable thead { display: none; }
-      #itemsTable tr { display: block; border: 1px solid #e2e8f0; margin-bottom: 10px; padding: 10px; border-radius: 8px; background: white; }
+      #itemsTable tr { display: block; border: 1px solid #e2e8f0; margin-bottom: 10px; padding: 10px; border-radius: 8px; }
       #itemsTable td { display: block; border: none; padding: 4px 0; width: 100% !important; }
       #itemsTable td::before { content: attr(data-label); font-weight: bold; font-size: 12px; display: block; color: #64748b; }
     }
@@ -61,14 +53,11 @@
 <header class="bg-white border-b border-slate-100 sticky top-0 z-50 py-3">
     <div class="header-container container flex justify-between items-center px-4">
         <h1 class="logo text-2xl font-extrabold tracking-tight"><a href="/" class="text-slate-900">Geoma</a></h1>
-        <div class="hamburger md:hidden text-xl cursor-pointer" id="hamburger-icon"><i class="fas fa-bars"></i></div>
         <nav id="nav-menu" class="hidden md:block">
             <ul class="flex gap-6 font-semibold text-slate-500 text-sm">
                 <li><a href="/" class="hover:text-blue-600">Home</a></li>
-                <li><a href="/index.html#about" class="hover:text-blue-600">About</a></li>
                 <li><a href="/posts/posts.html" class="hover:text-blue-600">Blog</a></li>
                 <li><a href="/app/bill/" class="text-blue-600">Tools</a></li>
-                <li><a href="/index.html#contact" class="hover:text-blue-600">Contact</a></li>
             </ul>
         </nav>
     </div>
@@ -76,52 +65,65 @@
 
 <main class="max-w-4xl mx-auto px-4 py-8">
   <div class="bg-white p-6 md:p-10 shadow-xl rounded-2xl space-y-8 border border-slate-100">
-    <div class="border-b border-slate-100 pb-6 text-center md:text-left">
-      <h2 class="text-3xl font-bold text-slate-900">Proforma Invoice Generator</h2>
-      <p class="text-slate-500 mt-1">Create and download GST-compliant invoices instantly.</p>
-    </div>
     
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-blue-50 p-6 rounded-xl border border-blue-100">
+        <div>
+            <label class="block text-xs font-bold text-blue-700 uppercase mb-2">Invoice Type</label>
+            <select id="invoiceType" class="input bg-white">
+                <option value="PROFORMA INVOICE">Proforma Invoice</option>
+                <option value="TAX INVOICE">Tax Invoice</option>
+            </select>
+        </div>
+        <div>
+            <label class="block text-xs font-bold text-blue-700 uppercase mb-2">Tax Mode</label>
+            <select id="gstMode" class="input bg-white">
+                <option value="GST">GST Applied (18%)</option>
+                <option value="NON-GST">Non-GST (No Tax)</option>
+            </select>
+        </div>
+    </div>
+
     <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
       <div class="space-y-4">
-        <h3 class="font-bold text-blue-600 uppercase text-xs tracking-widest flex items-center gap-2"><i class="fas fa-building"></i> Seller Details</h3>
+        <h3 class="font-bold text-slate-900 uppercase text-xs tracking-widest flex items-center gap-2"><i class="fas fa-building text-blue-600"></i> Seller</h3>
         <input id="sellerName" class="input" placeholder="Your Business Name">
-        <input id="sellerAddress" class="input" placeholder="Full Registered Address">
+        <input id="sellerAddress" class="input" placeholder="Address">
         <div class="grid grid-cols-2 gap-3">
           <input id="sellerMobile" type="tel" class="input" placeholder="Mobile">
           <input id="sellerEmail" type="email" class="input" placeholder="Email">
         </div>
         <div class="grid grid-cols-2 gap-3">
-          <input id="sellerGST" class="input" placeholder="GSTIN">
+          <input id="sellerGST" class="input" placeholder="Seller GSTIN">
           <input id="sellerState" class="input" placeholder="State Code (e.g. 07)">
         </div>
       </div>
 
       <div class="space-y-4">
-        <h3 class="font-bold text-blue-600 uppercase text-xs tracking-widest flex items-center gap-2"><i class="fas fa-user-tie"></i> Buyer Details</h3>
-        <input id="buyerName" class="input" placeholder="Client/Company Name">
+        <h3 class="font-bold text-slate-900 uppercase text-xs tracking-widest flex items-center gap-2"><i class="fas fa-user-tie text-blue-600"></i> Buyer</h3>
+        <input id="buyerName" class="input" placeholder="Client Name">
         <input id="buyerAddress" class="input" placeholder="Client Address">
         <div class="grid grid-cols-2 gap-3">
-          <input id="buyerGST" class="input" placeholder="Client GSTIN">
-          <input id="buyerState" class="input" placeholder="Client State Code">
+          <input id="buyerGST" class="input" placeholder="Buyer GSTIN">
+          <input id="buyerState" class="input" placeholder="Buyer State Code">
         </div>
       </div>
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-5 gap-4 bg-slate-50 p-4 rounded-xl">
-      <div class="col-span-2 md:col-span-1"><label class="text-[10px] font-bold text-slate-500 uppercase">Invoice No</label><input id="invoiceNo" class="input bg-white"></div>
+      <div class="col-span-2 md:col-span-1"><label class="text-[10px] font-bold text-slate-500 uppercase">Inv No</label><input id="invoiceNo" class="input bg-white"></div>
       <div><label class="text-[10px] font-bold text-slate-500 uppercase">Date</label><input type="date" id="invoiceDate" class="input bg-white"></div>
       <div><label class="text-[10px] font-bold text-slate-500 uppercase">Supply Date</label><input type="date" id="supplyDate" class="input bg-white"></div>
       <div><label class="text-[10px] font-bold text-slate-500 uppercase">Vehicle No</label><input id="vehicleNo" class="input bg-white"></div>
       <div class="col-span-2 md:col-span-1"><label class="text-[10px] font-bold text-slate-500 uppercase">Place of Supply</label><input id="placeOfSupplyInput" class="input bg-white"></div>
     </div>
 
-    <div class="pt-4">
-      <h3 class="font-bold text-slate-900 mb-4 flex items-center gap-2"><i class="fas fa-list-ul"></i> Line Items</h3>
+    <div>
+      <h3 class="font-bold text-slate-900 mb-4 flex items-center gap-2"><i class="fas fa-list-ul"></i> Items</h3>
       <table id="itemsTable" class="w-full">
         <thead class="hidden sm:table-header-group">
           <tr class="text-xs text-slate-500 border-b">
             <th class="p-3 border-0 text-left">Description</th>
-            <th class="p-3 border-0 w-32">HSN/SAC</th>
+            <th class="p-3 border-0 w-32">HSN</th>
             <th class="p-3 border-0 w-24 text-center">Qty</th>
             <th class="p-3 border-0 w-32 text-right">Rate</th>
             <th class="p-3 border-0 w-12"></th>
@@ -129,77 +131,75 @@
         </thead>
         <tbody></tbody>
       </table>
-      <button onclick="addRow()" class="mt-4 w-full sm:w-auto flex items-center justify-center gap-2 bg-white text-slate-700 font-bold px-6 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 transition">
-        <i class="fas fa-plus text-blue-600"></i> Add Item Row
+      <button onclick="addRow()" class="mt-4 flex items-center gap-2 bg-white text-slate-700 font-bold px-6 py-2 rounded-lg border border-slate-200 hover:bg-slate-50 transition">
+        <i class="fas fa-plus text-blue-600"></i> Add Item
       </button>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 border-t border-slate-100">
       <div class="space-y-3">
-        <h3 class="font-bold text-xs text-slate-500 uppercase tracking-widest">Bank Account</h3>
+        <h3 class="font-bold text-xs text-slate-500 uppercase">Bank</h3>
         <input id="bankName" class="input" placeholder="Bank Name">
-        <input id="bankAcc" class="input" placeholder="Account Number">
-        <input id="bankIFSC" class="input" placeholder="IFSC Code">
+        <input id="bankAcc" class="input" placeholder="A/C No">
+        <input id="bankIFSC" class="input" placeholder="IFSC">
       </div>
       <div class="space-y-3">
-        <h3 class="font-bold text-xs text-slate-500 uppercase tracking-widest">Payment QR</h3>
-        <input type="file" id="qrInput" accept="image/*" class="text-xs block w-full text-slate-400 file:bg-blue-50 file:text-blue-700 file:rounded-full file:border-0 file:px-4 file:py-2" onchange="previewQR(this)">
+        <h3 class="font-bold text-xs text-slate-500 uppercase">Payment QR</h3>
+        <input type="file" id="qrInput" accept="image/*" class="text-xs block w-full text-slate-400" onchange="previewQR(this)">
       </div>
       <div class="space-y-3">
-        <h3 class="font-bold text-xs text-slate-500 uppercase tracking-widest">Auth Signature</h3>
-        <input type="file" id="sigInput" accept="image/*" class="text-xs block w-full text-slate-400 file:bg-blue-50 file:text-blue-700 file:rounded-full file:border-0 file:px-4 file:py-2" onchange="previewSig(this)">
+        <h3 class="font-bold text-xs text-slate-500 uppercase">Signature</h3>
+        <input type="file" id="sigInput" accept="image/*" class="text-xs block w-full text-slate-400" onchange="previewSig(this)">
       </div>
     </div>
 
-    <button onclick="downloadPDF()" class="bg-blue-600 text-white w-full py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-blue-700 transition transform active:scale-95 flex items-center justify-center gap-3">
-      <i class="fas fa-file-pdf"></i> Generate & Download PDF
+    <button onclick="downloadPDF()" class="bg-blue-600 text-white w-full py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-blue-700 transition flex items-center justify-center gap-3">
+      <i class="fas fa-file-pdf"></i> Download PDF
     </button>
   </div>
 </main>
 
-<footer class="bg-white py-12 border-t border-slate-100 text-center">
-    <div class="container footer-container">
-        <p class="text-slate-900 font-bold">&copy; 2026 Geoma - All Rights Reserved.</p>
-        <p class="text-slate-400 text-xs mt-2">Efficiency through professional geospatial and digital tools.</p>
-    </div>
-</footer>
-
 <div id="invoice-preview-wrapper">
   <div id="invoice-preview" class="a4">
-    <div style="text-align:center; font-weight:bold; font-size:16px; margin-bottom:15px; border-bottom: 2px solid #000; padding-bottom: 5px;">PROFORMA INVOICE</div>
-    <div style="display:flex; border:1px solid black;">
-      <div style="width:65%; border-right:1px solid black; padding:15px; text-align: center;">
-          <div id="pSeller" style="font-size:22px; font-weight:800; text-transform:uppercase;"></div>
-          <div id="pSellerAddress" style="margin: 5px 0; color: #333;"></div>
-          <div style="font-size: 10px; color: #555;"><span id="pSellerMobile"></span> | <span id="pSellerEmail"></span></div>
+    <div style="text-align:center; margin-bottom:15px;">
+        <span id="pTitle" style="font-weight:bold; font-size:16px; border-bottom: 0.5pt solid #000; padding-bottom: 2px; display: inline-block;">PROFORMA INVOICE</span>
+    </div>
+
+    <div style="display:flex; border:0.5pt solid black;">
+      <div style="width:65%; border-right:0.5pt solid black; padding:15px; text-align: center;">
+          <div id="pSeller" style="font-size:18px; font-weight:800; text-transform:uppercase;"></div>
+          <div id="pSellerAddress" style="margin: 3px 0;"></div>
+          <div style="font-size: 10px; color: #333;"><span id="pSellerMobile"></span> | <span id="pSellerEmail"></span></div>
       </div>
-      <div style="width:35%; padding:10px; line-height:1.7;">
-          <div><strong>GSTIN:</strong> <span id="pSellerGST" style="font-weight:700;"></span></div>
-          <div><strong>Invoice No:</strong> <span id="pInvoiceNo" style="font-weight:700;"></span></div>
+      <div style="width:35%; padding:10px; line-height:1.6;">
+          <div><strong>GSTIN:</strong> <span id="pSellerGST"></span></div>
+          <div><strong>Inv No:</strong> <span id="pInvoiceNo"></span></div>
           <div><strong>Date:</strong> <span id="pInvoiceDate"></span></div>
           <div><strong>State Code:</strong> <span id="pSellerState"></span></div>
       </div>
     </div>
-    <div style="display:flex; border:1px solid black; border-top:none;">
-      <div style="width:65%; border-right:1px solid black; padding:10px;">
-        <div style="font-weight:bold; margin-bottom:5px; font-size: 10px; color: #666;">BILL TO:</div>
-        <div id="pBuyer" style="font-weight:bold; font-size: 14px;"></div>
-        <div id="pBuyerAddress" style="margin-bottom: 5px;"></div>
+
+    <div style="display:flex; border:0.5pt solid black; border-top:none;">
+      <div style="width:65%; border-right:0.5pt solid black; padding:8px;">
+        <div style="font-weight:bold; font-size: 9px; color: #666; margin-bottom: 2px;">BILL TO:</div>
+        <div id="pBuyer" style="font-weight:bold; font-size: 12px;"></div>
+        <div id="pBuyerAddress"></div>
         <div><strong>GSTIN:</strong> <span id="pBuyerGST"></span></div>
         <div><strong>State Code:</strong> <span id="pBuyerState"></span></div>
       </div>
-      <div style="width:35%; padding:10px; line-height:1.7;">
+      <div style="width:35%; padding:8px; line-height:1.6;">
         <div><strong>Vehicle No:</strong> <span id="pVehicle"></span></div>
         <div><strong>Supply Date:</strong> <span id="pSupplyDate"></span></div>
         <div><strong>Place of Supply:</strong> <span id="pPlaceSupply"></span></div>
       </div>
     </div>
+
     <table id="pItemsTable">
       <thead>
         <tr>
-          <th style="width:8%; text-align:center;">Sr. No</th>
-          <th style="width:42%;">Description of Goods</th>
-          <th style="width:12%; text-align:center;">HSN/SAC</th>
+          <th style="width:8%; text-align:center;">Sr.</th>
+          <th style="width:42%;">Description</th>
+          <th style="width:12%; text-align:center;">HSN</th>
           <th style="width:10%; text-align:center;">Qty</th>
           <th style="width:14%; text-align:right;">Rate</th>
           <th style="width:14%; text-align:right;">Amount</th>
@@ -207,10 +207,11 @@
       </thead>
       <tbody id="previewBody"></tbody>
     </table>
-    <div style="display:flex; border: 1px solid black; border-top: none;">
-      <div style="width:60%; padding:12px; border-right: 1px solid black;">
-        <div style="font-weight:bold; font-size: 9px; margin-bottom: 5px; color: #666;">AMOUNT IN WORDS</div>
-        <div id="pWords" style="text-transform: capitalize; font-weight: 700; font-size: 12px;"></div>
+
+    <div style="display:flex; border: 0.5pt solid black; border-top: none;">
+      <div style="width:60%; padding:10px; border-right: 0.5pt solid black;">
+        <div style="font-weight:bold; font-size: 9px; color: #666;">AMOUNT IN WORDS</div>
+        <div id="pWords" style="text-transform: capitalize; font-weight: 700; font-size: 10px;"></div>
       </div>
       <div style="width:40%;">
         <table style="width:100%; border:none;">
@@ -218,61 +219,41 @@
         </table>
       </div>
     </div>
-    <div style="display:flex; border: 1px solid black; border-top: none; min-height: 120px;">
-      <div style="width:45%; padding:10px; border-right: 1px solid black;">
-          <div style="font-weight:bold; font-size: 9px; margin-bottom: 5px; color: #666;">BANK ACCOUNT DETAILS</div>
-          <div id="pBankName" style="font-weight: 700; font-size: 11px;"></div>
+
+    <div style="display:flex; border: 0.5pt solid black; border-top: none; min-height: 100px;">
+      <div style="width:45%; padding:10px; border-right: 0.5pt solid black;">
+          <div style="font-weight:bold; font-size: 9px; color: #666;">BANK DETAILS</div>
+          <div id="pBankName" style="font-weight: 700;"></div>
           <div id="pBankAcc"></div>
           <div id="pBankIFSC"></div>
       </div>
-      <div style="width:20%; padding:10px; border-right: 1px solid black; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-          <img id="pQRCode" style="max-height: 80px; display: none;">
-          <div id="qrText" style="font-size: 7px; color: gray;">SCAN TO PAY</div>
+      <div style="width:20%; border-right: 0.5pt solid black; display: flex; align-items: center; justify-content: center;">
+          <img id="pQRCode" style="max-height: 70px; display: none;">
       </div>
-      <div style="width:35%; padding:15px; text-align: right; display: flex; flex-direction: column; justify-content: space-between;">
-        <div>For <strong id="pSellerSign"></strong></div>
-        <div style="height: 60px;"><img id="pSigImage" style="max-height: 60px; display: none; margin-left: auto;"></div>
-        <div style="font-size: 10px; font-weight: bold;">Authorised Signatory</div>
+      <div style="width:35%; padding:10px; text-align: right; display: flex; flex-direction: column; justify-content: space-between;">
+        <div style="font-size: 10px;">For <strong id="pSellerSign"></strong></div>
+        <div style="height: 40px;"><img id="pSigImage" style="max-height: 40px; display: none; margin-left: auto;"></div>
+        <div style="font-size: 9px; font-weight: bold;">Authorised Signatory</div>
       </div>
     </div>
-    <div style="font-size:8px; color: #666; margin-top: 20px;">
-        <strong>TERMS & CONDITIONS:</strong> 1. Advanced payment required. 2. All Disputes are subject to Delhi Jurisdiction only.
+
+    <div style="font-size:8.5px; color: #444; margin-top: 15px; border: 0.5pt solid #eee; padding: 5px;">
+        <strong>Terms & Conditions:</strong><br>
+        1. Advanced payment required for all orders.<br>
+        2. All disputes are subject to Delhi Jurisdiction only.<br>
+        3. Tax is applicable as per government regulations.
     </div>
   </div>
 </div>
 
 <script>
-let qrBase64 = "";
-let sigBase64 = "";
+let qrBase64 = "", sigBase64 = "";
 
-function previewQR(input) {
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-    reader.onload = (e) => { 
-        qrBase64 = e.target.result;
-        document.getElementById('pQRCode').src = qrBase64;
-        document.getElementById('pQRCode').style.display = 'block';
-        document.getElementById('qrText').style.display = 'none';
-    };
-    reader.readAsDataURL(input.files[0]);
-  }
-}
+function previewQR(i) { if (i.files && i.files[0]) { let r = new FileReader(); r.onload = (e) => { qrBase64 = e.target.result; document.getElementById('pQRCode').src = qrBase64; document.getElementById('pQRCode').style.display = 'block'; }; r.readAsDataURL(i.files[0]); } }
+function previewSig(i) { if (i.files && i.files[0]) { let r = new FileReader(); r.onload = (e) => { sigBase64 = e.target.result; document.getElementById('pSigImage').src = sigBase64; document.getElementById('pSigImage').style.display = 'block'; }; r.readAsDataURL(i.files[0]); } }
 
-function previewSig(input) {
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-    reader.onload = (e) => { 
-        sigBase64 = e.target.result;
-        document.getElementById('pSigImage').src = sigBase64;
-        document.getElementById('pSigImage').style.display = 'block';
-    };
-    reader.readAsDataURL(input.files[0]);
-  }
-}
-
-function formatINR(num) {
-  return "₹" + Number(num).toLocaleString("en-IN", { minimumFractionDigits: 2 });
-}
+function formatINR(n) { return "₹" + Number(n).toLocaleString("en-IN", { minimumFractionDigits: 2 }); }
+function formatDate(dateStr) { if (!dateStr) return ""; const [y, m, d] = dateStr.split('-'); return `${d}-${m}-${y}`; }
 
 function numberToWords(amount) {
     const words = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
@@ -292,31 +273,35 @@ function addRow() {
   let row = document.querySelector("#itemsTable tbody").insertRow();
   row.innerHTML = `
     <td data-label="Description"><input class="input" placeholder="Item Name"></td>
-    <td data-label="HSN/SAC"><input class="input" placeholder="Code"></td>
-    <td data-label="Quantity"><input type="number" class="input text-center" value="1"></td>
+    <td data-label="HSN"><input class="input" placeholder="Code"></td>
+    <td data-label="Qty"><input type="number" class="input text-center" value="1"></td>
     <td data-label="Rate"><input type="number" class="input text-right" value="0"></td>
-    <td class="text-center"><button class="text-red-400 hover:text-red-600 p-2" onclick="this.parentElement.parentElement.remove()"><i class="fas fa-trash"></i></button></td>
+    <td class="text-center"><button class="text-red-400 hover:text-red-600" onclick="this.parentElement.parentElement.remove()"><i class="fas fa-trash"></i></button></td>
   `;
 }
 
 function generateData() {
+  const type = document.getElementById('invoiceType').value;
+  const mode = document.getElementById('gstMode').value;
+
+  document.getElementById('pTitle').innerText = type;
   pSeller.innerText = sellerName.value;
   pSellerAddress.innerText = sellerAddress.value;
   pSellerMobile.innerText = sellerMobile.value;
   pSellerEmail.innerText = sellerEmail.value;
-  pSellerGST.innerText = sellerGST.value;
+  pSellerGST.innerText = sellerGST.value || "N/A";
   pSellerState.innerText = sellerState.value;
   pBuyer.innerText = buyerName.value;
   pBuyerAddress.innerText = buyerAddress.value;
-  pBuyerGST.innerText = buyerGST.value;
+  pBuyerGST.innerText = buyerGST.value || "N/A";
   pBuyerState.innerText = buyerState.value;
   pInvoiceNo.innerText = invoiceNo.value;
-  pInvoiceDate.innerText = invoiceDate.value;
+  pInvoiceDate.innerText = formatDate(invoiceDate.value);
   pVehicle.innerText = vehicleNo.value;
-  pSupplyDate.innerText = supplyDate.value;
+  pSupplyDate.innerText = formatDate(supplyDate.value);
   pPlaceSupply.innerText = placeOfSupplyInput.value;
   pBankName.innerText = bankName.value;
-  pBankAcc.innerText = "Account: " + bankAcc.value;
+  pBankAcc.innerText = "A/C: " + bankAcc.value;
   pBankIFSC.innerText = "IFSC: " + bankIFSC.value;
   pSellerSign.innerText = sellerName.value;
 
@@ -332,25 +317,24 @@ function generateData() {
     previewBody.innerHTML += `<tr><td style="text-align:center;">${i+1}</td><td>${desc}</td><td style="text-align:center;">${hsn}</td><td style="text-align:center;">${qty}</td><td style="text-align:right;">${formatINR(rate)}</td><td style="text-align:right;">${formatINR(amt)}</td></tr>`;
   });
 
-  let sState = sellerState.value.trim();
-  let bState = buyerState.value.trim();
   let finalTotal = subtotal;
-  let taxRows = `<tr><td style="border:none; text-align:right; font-weight:bold; padding:4px;">Sub Total</td><td style="border:none; border-left:1px solid black; text-align:right; font-weight:bold; padding:4px; width:120px;">${formatINR(subtotal)}</td></tr>`;
+  let taxRows = `<tr><td style="border:none; border-bottom:0.5pt solid black; text-align:right; font-weight:bold; padding:4px;">Sub Total</td><td style="border:none; border-left:0.5pt solid black; border-bottom:0.5pt solid black; text-align:right; font-weight:bold; padding:4px;">${formatINR(subtotal)}</td></tr>`;
 
-  if (sState === bState && sState !== "") {
-    let cgst = subtotal * 0.09;
-    let sgst = subtotal * 0.09;
-    finalTotal += (cgst + sgst);
-    taxRows += `<tr><td style="border:none; text-align:right; padding:4px;">CGST @ 9%</td><td style="border:none; border-left:1px solid black; text-align:right; padding:4px;">${formatINR(cgst)}</td></tr>`;
-    taxRows += `<tr><td style="border:none; text-align:right; padding:4px;">SGST @ 9%</td><td style="border:none; border-left:1px solid black; text-align:right; padding:4px;">${formatINR(sgst)}</td></tr>`;
-  } else {
-    let igst = subtotal * 0.18;
-    finalTotal += igst;
-    taxRows += `<tr><td style="border:none; text-align:right; padding:4px;">IGST @ 18%</td><td style="border:none; border-left:1px solid black; text-align:right; padding:4px;">${formatINR(igst)}</td></tr>`;
+  if (mode === "GST") {
+    const sS = sellerState.value.trim();
+    const bS = buyerState.value.trim();
+    if (sS === bS && sS !== "") {
+      let cgst = subtotal * 0.09, sgst = subtotal * 0.09;
+      finalTotal += (cgst + sgst);
+      taxRows += `<tr><td style="border:none; text-align:right; padding:4px;">CGST @ 9%</td><td style="border:none; border-left:0.5pt solid black; text-align:right; padding:4px;">${formatINR(cgst)}</td></tr>`;
+      taxRows += `<tr><td style="border:none; border-bottom:0.5pt solid black; text-align:right; padding:4px;">SGST @ 9%</td><td style="border:none; border-left:0.5pt solid black; border-bottom:0.5pt solid black; text-align:right; padding:4px;">${formatINR(sgst)}</td></tr>`;
+    } else {
+      let igst = subtotal * 0.18; finalTotal += igst;
+      taxRows += `<tr><td style="border:none; border-bottom:0.5pt solid black; text-align:right; padding:4px;">IGST @ 18%</td><td style="border:none; border-left:0.5pt solid black; border-bottom:0.5pt solid black; text-align:right; padding:4px;">${formatINR(igst)}</td></tr>`;
+    }
   }
 
-  taxRows += `<tr style="border-top:1px solid black; background:#f8fafc;"><td style="border:none; text-align:right; font-weight:bold; padding:8px;">GRAND TOTAL</td><td style="border:none; border-left:1px solid black; text-align:right; font-weight:bold; padding:8px;">${formatINR(finalTotal)}</td></tr>`;
-  
+  taxRows += `<tr style="background:#f8fafc;"><td style="border:none; text-align:right; font-weight:bold; padding:8px;">TOTAL</td><td style="border:none; border-left:0.5pt solid black; text-align:right; font-weight:bold; padding:8px;">${formatINR(finalTotal)}</td></tr>`;
   document.getElementById("taxTableBody").innerHTML = taxRows;
   document.getElementById("pWords").innerHTML = numberToWords(finalTotal);
   return true;
@@ -363,9 +347,14 @@ function downloadPDF() {
   wrapper.style.position = "static";
   wrapper.style.left = "0";
 
+  const sName = sellerName.value.replace(/\s+/g, '_') || "Seller";
+  const iType = document.getElementById('invoiceType').value.replace(/\s+/g, '_');
+  const iDate = formatDate(invoiceDate.value) || "Date";
+  const fileName = `${sName}_${iType}_${iDate}_${invoiceNo.value || '001'}.pdf`;
+
   const opt = {
     margin: 0,
-    filename: 'Geoma_Proforma_' + (invoiceNo.value || '001') + '.pdf',
+    filename: fileName,
     image: { type: 'jpeg', quality: 1 },
     html2canvas: { scale: 3, useCORS: true },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -379,6 +368,5 @@ function downloadPDF() {
 
 addRow();
 </script>
-
 </body>
 </html>

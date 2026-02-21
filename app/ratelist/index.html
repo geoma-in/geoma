@@ -3,194 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tools & Apps | GEOMA</title>
-    <link rel="stylesheet" href="../../css/style.css"> 
+    <title>Rate List Generator | Geoma</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="../../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        /* Essential layout fixes for sub-pages */
-        body {
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            background-color: #f8fafc;
-            font-family: 'Open Sans', sans-serif;
-        }
+        .input { width: 100%; border: 1px solid #e2e8f0; padding: 10px; border-radius: 8px; font-size: 15px; }
+        .input:focus { border-color: #3b82f6; outline: none; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
         
-        main { flex: 1; }
-
-        .container {
-            max-width: 1200px;
+        .a4-preview {
+            width: 210mm;
+            min-height: 295mm; 
+            padding: 15mm; 
+            background: white;
             margin: 0 auto;
-            padding: 0 20px;
+            font-size: 11.5px;
+            color: #000;
+            box-sizing: border-box;
+            line-height: 1.4;
+            page-break-inside: avoid;
         }
+        .quote-table { width: 100%; border-collapse: collapse; margin: 15px 0; table-layout: fixed; }
+        .quote-table th, .quote-table td { border: 0.5pt solid #000; padding: 10px; text-align: left; }
+        .quote-table th { background: #f8fafc; text-transform: uppercase; font-size: 9.5px; font-weight: bold; }
 
-        /* Coming Soon Specifics */
-        .coming-soon-container {
-            text-align: center;
-            padding: 80px 20px;
-            max-width: 850px;
-            margin: 0 auto;
-        }
-
-        .status-badge {
-            background: #dbeafe;
-            color: #1e40af;
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: inline-block;
-            margin-bottom: 24px;
-        }
-
-        .app-highlight {
-            background: #ffffff;
-            padding: 50px 30px;
-            border-radius: 24px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
-            margin-top: 30px;
-            border: 1px solid #f1f5f9;
-        }
-
-        .app-highlight i {
-            font-size: 4.5rem;
-            color: #3b82f6;
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        .app-highlight h3 {
-            font-size: 2rem;
-            margin: 0 0 15px 0;
-            color: #1e293b;
-        }
-
-        .app-highlight p {
-            color: #64748b;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        /* Button Styling to match Geoma */
-        .cta-button, .btn-container {
-            background-color: #3b82f6;
-            color: white !important;
-            padding: 14px 28px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-block;
-            transition: all 0.3s ease;
-        }
-
-        .cta-button:hover {
-            background-color: #2563eb;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
-        }
-
-        .upcoming-list {
-            margin-top: 60px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
-        }
-
-        .upcoming-item {
-            background: #ffffff;
-            padding: 30px 20px;
-            border-radius: 16px;
-            border: 2px dashed #e2e8f0;
-            transition: all 0.3s ease;
-        }
-        
-        .upcoming-item:hover {
-            border-color: #3b82f6;
-            background: #f1f5f9;
-        }
-
-        .upcoming-item h4 {
-            margin: 10px 0 5px 0;
-            color: #334155;
-        }
-
-        .upcoming-item p {
-            color: #94a3b8;
-            margin: 0;
-            font-weight: 600;
-        }
-
-        @media (max-width: 600px) {
-            .app-highlight { padding: 30px 20px; }
-            .app-highlight h3 { font-size: 1.5rem; }
-        }
+        #preview-wrapper { position: absolute; left: -9999px; top: 0; }
     </style>
 </head>
-<body>
-    <header>
-        <div class="header-container">
-            <h1 class="logo">
-                <a href="/">Geoma</a>
-            </h1>
-            <nav id="nav-menu">
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/app/bill/">Bills</a></li>
-                    <li><a href="/posts/posts.html">Blog</a></li>
-                </ul>
-            </nav>
+<body class="bg-slate-50">
+
+<header class="bg-white border-b border-slate-100 sticky top-0 z-50 py-3">
+    <div class="header-container container flex justify-between items-center px-4">
+        <h1 class="logo text-2xl font-extrabold tracking-tight"><a href="/" class="text-slate-900">Geoma</a></h1>
+        <nav id="nav-menu" class="hidden md:block">
+            <ul class="flex gap-6 font-semibold text-slate-500 text-sm">
+                <li><a href="/">Home</a></li>
+                <li><a href="/app/bill/" class="hover:text-blue-600">Bills</a></li>
+                <li><a href="/posts/posts.html" class="hover:text-blue-600">Blog</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="container py-8 max-w-4xl">
+    <div class="bg-white p-6 md:p-10 shadow-xl rounded-2xl space-y-6 border border-slate-100">
+        <div class="border-b pb-4">
+            <h2 class="text-2xl font-bold text-slate-800">Quotation Generator</h2>
+            <p class="text-slate-500 text-sm">Fill in the details to generate a professional Rate List.</p>
         </div>
-    </header>       
 
-    <main class="container">
-        <section class="coming-soon-container">
-            <span class="status-badge">Innovation in Progress</span>
-            <h2 style="font-size: 2.5rem; color: #0f172a; margin-bottom: 10px;">More Tools are Coming!</h2>
-            <p style="color: #475569; font-size: 1.1rem;">We are building a suite of smart tools to help you innovate and discover.</p>
-
-            <div class="app-highlight">
-                <i class="fas fa-file-invoice-dollar"></i>
-                <h3>Bill Generator is Live!</h3>
-                <p>Generate professional Construction and Goods invoices instantly with our easy-to-use platform.</p>
-                <a href="/app/bill/" class="cta-button">Explore Bill Generator</a>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-4">
+                <h3 class="font-bold text-blue-600 text-xs uppercase tracking-widest flex items-center gap-2">
+                    <i class="fas fa-user-tie"></i> Contractor Info
+                </h3>
+                <input id="contName" class="input" placeholder="Your Full Name">
+                <input id="contMobile" class="input" placeholder="Mobile Number">
+                <input id="contEmail" class="input" placeholder="Email Address">
+                <input id="contAddress" class="input" placeholder="Office Address">
             </div>
-
-            <div class="upcoming-list">
-                <div class="upcoming-item">
-                    <i class="fas fa-list-ul" style="color: #94a3b8; font-size: 2rem;"></i>
-                    <h4>Rate List Generator</h4>
-                    <p style="font-size: 0.8rem;">COMING SOON</p>
-                </div>
-                <div class="upcoming-item">
-                    <i class="fas fa-satellite" style="color: #94a3b8; font-size: 2rem;"></i>
-                    <h4>GIS Data Viewer</h4>
-                    <p style="font-size: 0.8rem;">IN DEVELOPMENT</p>
-                </div>
-                <div class="upcoming-item">
-                    <i class="fas fa-chart-line" style="color: #94a3b8; font-size: 2rem;"></i>
-                    <h4>Agri-Analytics</h4>
-                    <p style="font-size: 0.8rem;">PLANNING STAGE</p>
-                </div>
+            <div class="space-y-4">
+                <h3 class="font-bold text-blue-600 text-xs uppercase tracking-widest flex items-center gap-2">
+                    <i class="fas fa-map-pin"></i> Site Info
+                </h3>
+                <textarea id="siteAddr" class="input h-32" placeholder="Full Site Address"></textarea>
             </div>
-
-            <div style="margin-top: 60px;">
-                <a href="/" style="background: transparent; color: #3b82f6 !important; border: 2px solid #3b82f6;" class="btn-container">Return to Homepage</a>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-container" style="text-align: center; padding: 30px; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem;">
-            <p>Copyright © 2024 Geoma - All Rights Reserved.</p>
         </div>
-    </footer>
 
-    <script src="../js/scripts.js"></script>
+        <div class="pt-6 border-t">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fas fa-list"></i> Price List
+                </h3>
+                <button onclick="addNewRow()" class="text-blue-600 text-xs font-bold hover:underline">+ Add Custom Row</button>
+            </div>
+            <div id="items-container" class="space-y-2"></div>
+        </div>
+
+        <div class="pt-6 border-t">
+            <h3 class="font-bold text-xs text-slate-500 uppercase mb-3">Terms & Conditions</h3>
+            <textarea id="quoteTerms" class="input h-28 text-sm italic">1. Electricity and water shall be provided by the client.
+2. All materials will be arranged by the client unless specified otherwise.
+3. Milestone payments: 90% of the total value corresponding to each 500-square-feet interval shall be paid upon completion.
+4. Measurements will be taken based on the actual work completed at the site.</textarea>
+        </div>
+
+        <button onclick="downloadQuote()" class="bg-blue-600 text-white w-full py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-blue-700 transition flex items-center justify-center gap-3">
+            <i class="fas fa-file-pdf"></i> Generate & Download PDF
+        </button>
+    </div>
+</main>
+
+<footer class="bg-white py-8 border-t border-slate-100 text-center">
+    <div class="container">
+        <p class="font-bold text-sm">&copy; 2026 Geoma - All Rights Reserved.</p>
+    </div>
+</footer>
+
+<div id="preview-wrapper">
+    <div id="quote-preview" class="a4-preview">
+        <div style="text-align: center; border-bottom: 1.2pt solid #000; padding-bottom: 8px; margin-bottom: 15px;">
+            <h1 id="pContName" style="font-size: 22px; margin: 0; text-transform: uppercase; font-weight: 800;"></h1>
+            <p id="pContDetails" style="margin: 3px 0; font-size: 10px;"></p>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+            <div style="max-width: 400px;">
+                <p><strong>Site Address:</strong> <span id="pSiteAddr"></span></p>
+            </div>
+            <div style="text-align: right;">
+                <p><strong>Date:</strong> <span id="pDate"></span></p>
+            </div>
+        </div>
+
+        <div style="margin: 10px 0;">
+            <p><strong>Subject:</strong> Quotation for Tiles & Construction Work Requirements</p>
+        </div>
+
+        <div style="margin-top: 10px;">
+            <p>Dear Sir/Ma'am,</p>
+            <p>We acknowledge with thanks the receipt of your valuable enquiry for the construction and tiles related requirements at your site. We are pleased to submit our most competitive rates as follows:</p>
+        </div>
+
+        <table class="quote-table">
+            <thead>
+                <tr>
+                    <th style="width: 8%; text-align: center;">Sr.</th>
+                    <th style="width: 67%;">Description</th>
+                    <th style="width: 25%; text-align: right;">Rate/Sqft or Rft (₹)</th>
+                </tr>
+            </thead>
+            <tbody id="pTableBody"></tbody>
+        </table>
+
+        <div style="margin-top: 12px;">
+            <p style="font-weight: bold; text-decoration: underline; font-size: 9px; margin-bottom: 3px;">TERMS & CONDITIONS:</p>
+            <div id="pTerms" style="white-space: pre-wrap; font-size: 9.5px; color: #333; font-style: italic;"></div>
+        </div>
+
+        <div style="margin-top: 25px; text-align: right;">
+            <p style="margin-bottom: 0px; font-size: 11px;">Thanks & Regards,</p>
+            <p><strong id="pSignName" style="font-size: 12px;"></strong></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const defaultItems = [
+        { desc: "Tile fitting work including labor", rate: "55" },
+        { desc: "Floor Tile Fitting", rate: "55" },
+        { desc: "Wall Tile Fitting", rate: "65" },
+        { desc: "Skirting Work", rate: "45" },
+        { desc: "Mosaic Work", rate: "80" },
+        { desc: "Epoxy Grout", rate: "15" },
+        { desc: "Plaster Work", rate: "45" },
+        { desc: "Tiles Demolition", rate: "25" },
+        { desc: "Metho Stone Work", rate: "60" }
+    ];
+
+    function addNewRow(desc = "", rate = "") {
+        const container = document.getElementById('items-container');
+        const div = document.createElement('div');
+        div.className = 'flex gap-2 items-center bg-white p-2 rounded-lg border border-slate-100 shadow-sm';
+        div.innerHTML = `
+            <input class="input text-sm" placeholder="Item Description" value="${desc}">
+            <input class="input w-28 font-bold text-blue-600 text-sm" placeholder="Rate" value="${rate}">
+            <button onclick="this.parentElement.remove()" class="text-red-400 p-2 hover:text-red-600"><i class="fas fa-trash"></i></button>
+        `;
+        container.appendChild(div);
+    }
+
+    window.onload = () => {
+        defaultItems.forEach(item => addNewRow(item.desc, item.rate));
+    };
+
+    function downloadQuote() {
+        const today = new Date();
+        const fullName = document.getElementById('contName').value || "Contractor";
+        const siteA = document.getElementById('siteAddr').value || "Site";
+        
+        // Extract First Name
+        const firstName = fullName.split(' ')[0].replace(/[^a-zA-Z0-9]/g, '');
+
+        document.getElementById('pDate').innerText = `${today.getDate().toString().padStart(2, '0')}-${(today.getMonth()+1).toString().padStart(2, '0')}-${today.getFullYear()}`;
+        document.getElementById('pContName').innerText = fullName;
+        document.getElementById('pContDetails').innerText = `${document.getElementById('contAddress').value} | Mob: ${document.getElementById('contMobile').value}`;
+        document.getElementById('pSiteAddr').innerText = siteA;
+        document.getElementById('pTerms').innerText = document.getElementById('quoteTerms').value;
+        document.getElementById('pSignName').innerText = fullName;
+
+        const pTable = document.getElementById('pTableBody');
+        pTable.innerHTML = "";
+        document.querySelectorAll('#items-container > div').forEach((row, index) => {
+            const inputs = row.querySelectorAll('input');
+            if (inputs[0].value) {
+                pTable.innerHTML += `
+                    <tr>
+                        <td style="text-align:center;">${index + 1}</td>
+                        <td style="font-size:10.5px;">${inputs[0].value}</td>
+                        <td style="text-align:right; font-weight:bold;">₹ ${inputs[1].value}</td>
+                    </tr>
+                `;
+            }
+        });
+
+        const element = document.getElementById('quote-preview');
+        const wrapper = document.getElementById('preview-wrapper');
+        wrapper.style.position = "static";
+        wrapper.style.left = "0";
+
+        // Filename: FirstName_Rate_List_for_SiteAddress
+        const cleanSite = siteA.substring(0, 25).replace(/[^a-zA-Z0-9]/g, '_');
+        const fileName = `${firstName}_Rate_List_for_${cleanSite}.pdf`;
+        
+        const opt = {
+            margin: 0,
+            filename: fileName,
+            image: { type: 'jpeg', quality: 1 },
+            html2canvas: { scale: 2.5, useCORS: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            wrapper.style.position = "absolute";
+            wrapper.style.left = "-9999px";
+        });
+    }
+</script>
 </body>
 </html>
