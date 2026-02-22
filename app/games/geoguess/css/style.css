@@ -1,0 +1,188 @@
+:root {
+  --primary: #2196f3;
+  --success: #2ecc71;
+  --danger: #e74c3c;
+  --bg-dark: #0f172a;
+  --text-main: #ffffff;
+  --text-dim: #cbd5e1;
+}
+
+body, html {
+  margin: 0; padding: 0; height: 100%; width: 100%;
+  font-family: 'Open Sans', -apple-system, system-ui, sans-serif;
+  background: #000; overflow: hidden;
+}
+
+#app {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  flex-direction: column;
+}
+
+/* 40/60 Split for Mobile */
+#map {
+  height: 40vh; 
+  width: 100%;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+#controls {
+  height: 60vh;
+  background: var(--bg-dark);
+  border-top: 2px solid rgba(255,255,255,0.1);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  box-sizing: border-box;
+  overflow: hidden; 
+}
+
+/* Header with Home and Disclaimer */
+#game-header {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 12px; 
+  border-bottom: 1px solid rgba(255,255,255,0.05); 
+  padding-bottom: 8px;
+  flex-shrink: 0;
+}
+
+#disclaimerLink {
+  font-size: 9px; 
+  color: #94a3b8; 
+  text-transform: none; 
+  letter-spacing: 0.5px; 
+  font-weight: 700; 
+  cursor: pointer; 
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+#disclaimerLink:hover { color: var(--primary) !important; }
+
+/* Middle section: Question, Options, Score, and Buttons all scroll together */
+.game-content-scrollable {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 20px; /* Space at the bottom of the scroll */
+}
+
+/* Desktop Sidebar Logic */
+@media (min-width: 768px) {
+  #app { flex-direction: row; }
+  #map { height: 100vh; flex: 1; }
+  #controls { 
+    height: 100vh;
+    width: 380px; 
+    border-top: none; 
+    border-left: 2px solid rgba(255,255,255,0.1); 
+  }
+}
+
+#question { font-size: 0.95rem; font-weight: bold; margin-bottom: 8px; color: var(--text-main); text-align: center; }
+
+#districtDescription { 
+  background: rgba(255,255,255,0.05);
+  color: var(--text-dim);
+  border-left: 4px solid var(--primary);
+  padding: 10px; border-radius: 6px;
+  font-size: 13px; margin-bottom: 10px;
+}
+
+#options { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 8px; 
+  align-content: start;
+}
+
+.opt-btn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: white; 
+  padding: 12px 2px;
+  border-radius: 6px; 
+  cursor: pointer;
+  font-size: 12px; 
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.opt-btn.correct { background: var(--success) !important; border-color: #166534; }
+.opt-btn.wrong { background: var(--danger) !important; border-color: #991b1b; }
+
+.opt-btn.disabled, 
+.opt-btn:disabled {
+  opacity: 1 !important; 
+  pointer-events: none;  
+  cursor: default;
+}
+
+.opt-btn.disabled {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Status and Buttons follow options in the scroll */
+#status { 
+  display: flex; 
+  justify-content: space-between; 
+  color: #94a3b8; 
+  font-size: 11px; 
+  padding: 12px 0 6px 0; 
+  margin-top: 10px; 
+  border-top: 1px solid rgba(255,255,255,0.05); 
+}
+
+#buttons { display: flex; gap: 8px; padding-bottom: 15px; }
+#nextBtn { background: var(--primary); color: white; flex: 2; border: none; border-radius: 6px; font-weight: bold; height: 44px; cursor: pointer; }
+#nextBtn:disabled { opacity: 0.3; }
+#restartBtn { background: #334155; color: white; flex: 1; border: none; border-radius: 6px; cursor: pointer; }
+
+/* Modals */
+.modal {
+  position: fixed; 
+  inset: 0; 
+  background: rgba(0,0,0,0.95);
+  z-index: 9999; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+.modal.hidden { 
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-content {
+  background: #1e293b; 
+  padding: 30px; 
+  border-radius: 16px;
+  text-align: center; 
+  max-width: 320px; 
+  width: 85%; 
+  border: 1px solid var(--primary);
+  color: white;
+}
+
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+#modalRestartBtn { background: var(--success); color: white; border: none; padding: 12px; border-radius: 8px; flex: 1; font-weight: bold; cursor: pointer; }
+#modalCloseBtn { background: transparent; color: #94a3b8; border: none; flex: 1; cursor: pointer; }
+
+/* Optimization for small/short phones */
+@media (max-height: 670px) {
+  #question { font-size: 0.85rem; margin-bottom: 4px; }
+  .opt-btn { padding: 8px 2px; font-size: 11px; }
+  #nextBtn, #restartBtn { height: 38px; font-size: 13px; }
+  #status { padding: 6px 0 4px 0; }
+}

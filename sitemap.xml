@@ -24,15 +24,19 @@
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://geoma.in/app/bill/GoodsBill/index.html</loc>
+    <loc>https://geoma.in/app/bill/goodsbill/index.html</loc>
     <priority>0.70</priority>
   </url>
   <url>
-    <loc>https://geoma.in/app/bill/ConstuctionBill/index.html</loc>
+    <loc>https://geoma.in/app/bill/constuctionbill/index.html</loc>
     <priority>0.70</priority>
   </url>
   <url>
-    <loc>https://geoma.in/app/bill/Proforma/index.html</loc>
+    <loc>https://geoma.in/app/games/index.html</loc>
+    <priority>0.70</priority>
+  </url>
+    <url>
+    <loc>https://geoma.in/app/games/geoguess/index.html</loc>
     <priority>0.70</priority>
   </url>
 

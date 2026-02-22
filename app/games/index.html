@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geo Games | Geoma</title>
+    <meta name="description" content="Fun and educational games to enhance your geography knowledge.">
+    
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        .bill-hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        .bill-card {
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .bill-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            border-color: #2196f3;
+        }
+        .bill-card i {
+            font-size: 3rem;
+            color: #2196f3;
+            margin-bottom: 1.5rem;
+        }
+        .bill-card h3 {
+            margin-bottom: 1rem;
+            color: #1e293b;
+            font-size: 1.5rem;
+        }
+        .bill-card p {
+            font-size: 1rem;
+            color: #64748b;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        .hub-header {
+            text-align: center;
+            padding: 60px 0 20px;
+        }
+        .hub-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .hub-header p {
+            font-size: 1.1rem;
+            color: #64748b;
+        }
+        .btn-game {
+            background: #2196f3;
+            color: white !important;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .btn-game:hover {
+            background: #1976d2;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-container container">
+            <h1 class="logo">
+                <a href="../../">Geoma</a>
+            </h1>
+            <div class="hamburger" id="hamburger-icon" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i> 
+            </div>
+            <nav id="nav-menu">
+                <ul>
+                    <li><a href="../../index.html">Home</a></li>
+                    <li><a href="../../index.html#about">About</a></li>
+                    <li><a href="../../posts/posts.html">Blog</a></li>
+                    <li><a href="../../app/">Tools</a></li>
+                    <li><a href="../../app/games/">Games</a></li>
+                    <li><a href="../../index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>       
+
+    <main class="container">
+        <div class="hub-header">
+            <h2>Geo Games</h2>
+            <p>Challenge your spatial awareness and explore India like never before.</p>
+        </div>
+
+        <section class="bill-hub-grid">
+            <div class="bill-card">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <h3>District Guess</h3>
+                <p>Can you identify a district just by its shape? Explore over 700 districts across India and test your local knowledge.</p>
+                <a href="./geoguess/" class="btn-game">Play Now</a>
+            </div>
+
+            <div class="bill-card">
+                <i class="fa-solid fa-flag"></i>
+                <h3>State Capitals</h3>
+                <p>How fast can you pin all the state capitals? A high-speed challenge for geography enthusiasts. Coming soon!</p>
+                <a href="#" class="btn-game" style="background: #94a3b8; cursor: not-allowed;">Coming Soon</a>
+            </div>
+        </section>
+
+        <section style="text-align: center; padding: 40px 0 80px;">
+            <p>Spotted an error in our maps? Email us at <a href="mailto:contact@geoma.in" class="email-link">contact@geoma.in</a></p>
+            <div style="margin-top: 25px;">
+                <a href="../../index.html" class="read-more" style="text-transform: none; border-color: #cbd5e1; color: #64748b !important; text-decoration: none; border: 1px solid #cbd5e1; padding: 8px 16px; border-radius: 6px;">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Homepage
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-container">
+            <p>&copy; 2026 Geoma - All Rights Reserved.</p>
+            <p style="font-size: 0.8rem; margin-top: 5px; opacity: 0.7;">Compliance: National Geospatial Policy 2022.</p>
+        </div>
+    </footer>
+
+    <script src="../../js/scripts.js"></script>
+</body>
+</html>

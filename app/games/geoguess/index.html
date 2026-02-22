@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Guess the District — India | Geoma</title>
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css" />
+  
+  <style>
+    /* Ensuring the Geoma brand font is applied */
+    body { font-family: 'Open Sans', sans-serif; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div id="map"></div>
+    <div id="controls">
+      <div id="game-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; flex-shrink: 0;">
+          <div id="homeBtn" style="cursor: pointer; display: flex; align-items: center; gap: 8px; color: #2563eb; font-weight: 700; font-size: 15px;">
+            <i class="fa-solid fa-house"></i> <span>Geoma</span>
+          </div>
+          <div id="disclaimerLink" style="font-size: 10px; color: #94a3b8; letter-spacing: 0.5px; font-weight: 700; cursor: pointer; text-decoration: underline;">
+            Disclaimer
+          </div>
+      </div>
+
+      <div class="game-content-scrollable">
+        <div id="question">Question: Which district is highlighted?</div>
+        <div id="districtDescription" style="display:none;"></div>
+        <div id="options"></div>
+
+        <div id="status" style="display: flex; justify-content: space-between; color: #94a3b8; font-size: 11px; padding: 12px 0 6px 0; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.05);">
+          <div id="score">Score: 0 / 100</div>
+          <div id="round">Round: 0 / 10</div>
+        </div>
+
+        <div id="buttons" style="display: flex; gap: 8px; padding-bottom: 15px;">
+          <button id="nextBtn" disabled>Next Round</button>
+          <button id="restartBtn">Restart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="finalModal" class="modal hidden">
+    <div class="modal-content">
+      <h2 id="finalTitle">Round complete</h2>
+      <div id="finalMessage" style="margin-bottom: 20px; line-height: 1.5;">Your score: 0</div>
+      <div class="modal-actions">
+        <button id="modalRestartBtn">Play Again</button>
+        <button id="modalCloseBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="disclaimerModal" class="modal hidden">
+    <div class="modal-content" style="max-width: 85vw; text-align: left; font-size: 13px; line-height: 1.5; color: #cbd5e1;">
+      <h2 style="margin-top: 0; color: #fff; font-size: 18px; border-bottom: 1px solid #334155; padding-bottom: 10px;">Disclaimer & Compliance</h2>
+      
+      <div style="max-height: 55vh; overflow-y: auto; padding-right: 5px;">
+        <p><strong>Geopolitical Boundaries:</strong> The district boundaries and map visualizations are derived from open-source GeoJSON datasets and community-driven basemaps. They are intended for <strong>educational and gaming purposes only</strong> and do not represent official sovereign boundaries of the Republic of India.</p>
+        
+        <p><strong>Official Reference:</strong> For the accurate and official map of India, please refer to the <a href="https://surveyofindia.gov.in/" target="_blank" style="color: #2196f3;">Survey of India</a>.</p>
+        
+        <p><strong>Data Reliability:</strong> While we aim for accuracy across all 741 districts, administrative changes may occur. Facts are sourced from public records. Official data verification: <a href="https://india.gov.in" target="_blank" style="color: #2196f3;">india.gov.in</a>.</p>
+        
+        <p style="font-size: 11px; color: #94a3b8; font-style: italic;">Compliance: This tool complies with the National Geospatial Policy 2022.</p>
+      </div>
+
+      <button id="closeDisclaimerBtn" style="width: 100%; padding: 12px; background: #2196f3; border: none; border-radius: 8px; color: white; font-weight: bold; margin-top: 15px; cursor: pointer;">I Understand</button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/districts-descriptions.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
