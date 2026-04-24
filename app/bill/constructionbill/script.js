@@ -129,6 +129,18 @@ document.getElementById("inputForm").addEventListener("submit", function(e) {
   const spaceType = document.getElementById("spaceType").value;
   const type = document.getElementById("entryType").value;
 
+  // Validate required fields based on entry type
+  if (!spaceType || !rate) {
+    alert("Please fill in all required fields.");
+    return;
+  }
+  if (type === "add" || type === "less") {
+    if (!feet && feet !== 0) {
+      alert("Please enter Feet value.");
+      return;
+    }
+  }
+
   let area = 0, amount = 0;
 
   if (type === 'add' || type === 'less') {

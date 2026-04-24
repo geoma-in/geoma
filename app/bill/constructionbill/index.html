@@ -184,45 +184,65 @@
   <script src="script.js"></script>
   <script src="generatepdf.js"></script>
   <script>
-    let currentType = document.getElementById("entryType").value;
+    // Store form values in memory when switching entry types
+    let formValues = {
+      spaceType: "",
+      feet: "",
+      inch: "0",
+      feet2: "",
+      inch2: "0",
+      rate: ""
+    };
 
     function updateFormFields() {
       const type = document.getElementById("entryType").value;
-      if (type === currentType) return;
-      currentType = type;
-
       const labelSpaceType = document.getElementById("label-spaceType");
       const labelFeet = document.getElementById("label-feet");
       const labelInch = document.getElementById("label-inch");
       const labelFeet2 = document.getElementById("label-feet2");
       const labelInch2 = document.getElementById("label-inch2");
       const labelRate = document.getElementById("label-rate");
-      
+
+      // Save current values before switching
+      const currentSpaceType = document.getElementById("spaceType");
+      const currentFeet = document.getElementById("feet");
+      const currentInch = document.getElementById("inch");
+      const currentFeet2 = document.getElementById("feet2");
+      const currentInch2 = document.getElementById("inch2");
+      const currentRate = document.getElementById("rate");
+
+      if (currentSpaceType) formValues.spaceType = currentSpaceType.value;
+      if (currentFeet) formValues.feet = currentFeet.value;
+      if (currentInch) formValues.inch = currentInch.value;
+      if (currentFeet2) formValues.feet2 = currentFeet2.value;
+      if (currentInch2) formValues.inch2 = currentInch2.value;
+      if (currentRate) formValues.rate = currentRate.value;
+
       labelInch.style.display = "block";
       labelFeet2.style.display = "block";
       labelInch2.style.display = "block";
 
       if (type === "running") {
-        labelSpaceType.innerHTML = `Space Type:<input type="text" id="spaceType" class="input" required>`;
-        labelFeet.innerHTML = `Running Feet:<input type="number" id="feet" class="input" step="any" required>`;
-        labelRate.innerHTML = `Rate:<input type="number" id="rate" class="input" required>`;
+        labelSpaceType.innerHTML = `Space Type:<input type="text" id="spaceType" class="input" value="${formValues.spaceType}">`;
+        labelFeet.innerHTML = `Running Feet:<input type="number" id="feet" class="input" step="any" value="${formValues.feet}">`;
+        labelRate.innerHTML = `Rate:<input type="number" id="rate" class="input" value="${formValues.rate}">`;
         labelInch.style.display = "none";
         labelFeet2.style.display = "none";
         labelInch2.style.display = "none";
       } else if (type === "misc") {
-        labelSpaceType.innerHTML = `Charge Type:<input type="text" id="spaceType" class="input" required>`;
-        labelFeet.innerHTML = `Days:<input type="number" id="feet" class="input" step="any" required>`;
-        labelInch.innerHTML = `Extra Hours:<input type="number" id="inch" value="0" class="input" step="1" required>`;
-        labelRate.innerHTML = `Rate/Day:<input type="number" id="rate" class="input" required>`;
+        labelSpaceType.innerHTML = `Charge Type:<input type="text" id="spaceType" class="input" value="${formValues.spaceType}">`;
+        labelFeet.innerHTML = `Days:<input type="number" id="feet" class="input" step="any" value="${formValues.feet}">`;
+        labelInch.innerHTML = `Extra Hours:<input type="number" id="inch" value="0" class="input" step="1" value="${formValues.inch}">`;
+        labelRate.innerHTML = `Rate/Day:<input type="number" id="rate" class="input" value="${formValues.rate}">`;
         labelFeet2.style.display = "none";
         labelInch2.style.display = "none";
       } else {
-        labelSpaceType.innerHTML = `Space Type:<input type="text" id="spaceType" class="input" required>`;
-        labelFeet.innerHTML = `Feet:<input type="number" id="feet" class="input" step="any" required>`;
-        labelInch.innerHTML = `Inch:<input type="number" id="inch" value="0" class="input" step="1" required>`;
-        labelFeet2.innerHTML = `Feet2:<input type="number" id="feet2" class="input" step="any" required>`;
-        labelInch2.innerHTML = `Inch2:<input type="number" id="inch2" value="0" class="input" step="1" required>`;
-        labelRate.innerHTML = `Rate:<input type="number" id="rate" class="input" required>`;
+        labelSpaceType.innerHTML = `Space Type:<input type="text" id="spaceType" class="input" value="${formValues.spaceType}">`;
+        labelFeet.innerHTML = `Feet:<input type="number" id="feet" class="input" step="any" value="${formValues.feet}">`;
+        labelInch.innerHTML = `Inch:<input type="number" id="inch" value="0" class="input" step="1" value="${formValues.inch}">`;
+        labelFeet2.innerHTML = `Feet2:<input type="number" id="feet2" class="input" step="any" value="${formValues.feet2}">`;
+        labelInch2.innerHTML = `Inch2:<input type="number" id="inch2" value="0" class="input" step="1" value="${formValues.inch2}">`;
+        labelRate.innerHTML = `Rate:<input type="number" id="rate" class="input" value="${formValues.rate}">`;
       }
     }
     document.getElementById("entryType").addEventListener("change", updateFormFields);
